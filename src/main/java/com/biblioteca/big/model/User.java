@@ -7,20 +7,22 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "firstName", nullable = false)
+    @Column(name = "first_name", length = 100)
     private String firstName;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "last_name", length = 100)
     private String lastName;
 
-    @Column(name = "documentNumber", nullable = false)
+    @Column(name = "document_number")
     private Long documentNumber;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", length = 100)
     private String email;
+
+    @OneToOne(mappedBy = "userId")
+    private Reservation reservations;
 
     public User(){ }
 
@@ -70,5 +72,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Reservation getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Reservation reservations) {
+        this.reservations = reservations;
     }
 }

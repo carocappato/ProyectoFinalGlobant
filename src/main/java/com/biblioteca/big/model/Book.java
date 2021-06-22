@@ -1,7 +1,5 @@
 package com.biblioteca.big.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -10,32 +8,33 @@ import java.util.Date;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", length = 100)
     private String title;
 
-    @Column(name = "author", nullable = false)
+    @Column(name = "author", length = 100)
     private String author;
 
-    @Column(name = "editorialDate", nullable = false)
+    @Column(name = "editorial_date")
     private Date editorialDate;
-    @Column(name = "bookStatus", nullable = false)
-    private String status;
 
-    @Column(name = "reservationId")
-    private int reservation;
+    @Column(name = "book_status", length = 50)
+    private String bookStatus;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
+    private Reservation reservationId;
 
     public Book() { }
 
-    public Book(Long id, String title, String author, Date editorialDate, String status, int reservation) {
+    public Book(Long id, String title, String author, Date editorialDate, String bookStatus, Reservation reservationId) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.editorialDate = editorialDate;
-        this.status = status;
-        this.reservation = reservation;
+        this.bookStatus = bookStatus;
+        this.reservationId = reservationId;
     }
 
     public Long getId() {
@@ -71,18 +70,18 @@ public class Book {
     }
 
     public String getStatus() {
-        return status;
+        return bookStatus;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.bookStatus = status;
     }
 
-    public int getReservation() {
-        return reservation;
+    public Reservation getReservation() {
+        return reservationId;
     }
 
-    public void setReservation(int reservation) {
-        this.reservation = reservation;
+    public void setReservation(Reservation reservation) {
+        this.reservationId = reservation;
     }
 }

@@ -8,25 +8,28 @@ import java.util.Date;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "startDate", nullable = false)
+    @Column(name = "start_date")
     private Date startDate;
 
-    @Column(name = "endDate", nullable = false)
+    @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name = "userId")
-    private int user;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User userId;
+
+    @OneToOne(mappedBy = "reservationId")
+    private Book books;
 
     public Reservation(){ }
 
-    public Reservation(Long id, Date startDate, Date endDate, int user) {
+    public Reservation(Long id, Date startDate, Date endDate, User userId) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.user = user;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -53,11 +56,19 @@ public class Reservation {
         this.endDate = endDate;
     }
 
-    public int getUser() {
-        return user;
+    public User getUser() {
+        return userId;
     }
 
-    public void setUser(int user) {
-        this.user = user;
+    public void setUser(User user) {
+        this.userId = user;
+    }
+
+    public Book getBooks() {
+        return books;
+    }
+
+    public void setBooks(Book books) {
+        this.books = books;
     }
 }
