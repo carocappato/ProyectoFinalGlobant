@@ -1,5 +1,7 @@
 package com.biblioteca.big.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -17,6 +19,7 @@ public class Book {
     private String author;
 
     @Column(name = "editorial_date")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date editorialDate;
 
     @Column(name = "book_status", length = 50)
