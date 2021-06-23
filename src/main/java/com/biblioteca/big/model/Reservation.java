@@ -1,5 +1,7 @@
 package com.biblioteca.big.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,9 +13,11 @@ public class Reservation {
     private Long id;
 
     @Column(name = "start_date")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date startDate;
 
     @Column(name = "end_date")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date endDate;
 
     @OneToOne(cascade = CascadeType.ALL)
