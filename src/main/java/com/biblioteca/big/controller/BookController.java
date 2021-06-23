@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RequestMapping("/books")
 @RestController
 public class BookController {
 
@@ -20,28 +21,32 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/books")
+    @GetMapping
     public List<Book> getAllBooks(){
         return bookRepository.findAll(Sort.by("title").ascending());
     }
 
-    @GetMapping("/books/{id}")
+    @GetMapping("/{id}")
     public Book getBookById(@PathVariable Long id){
         Optional<Book> book = bookRepository.findById(id);
         return book.get();
+        //TODO: MANEJAR LA EXCEPCION SI NO EXISTE EL ID
     }
 
-    //@GetMapping("/books/disponible")
-    //public List<Book> getAllBooksAvailable(){
-    //    return bookService.getAvailable(Sort.by("title").ascending());
-    //}
+    /*
+    @GetMapping("/{status}")
+    public List<Book> getBooksByStatus(){
+        return bookService.getByStatus(Sort.by("title").ascending());
+    }
+    */
 
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable Long id){
         bookRepository.deleteById(id);
+        //TODO: MANEJAR LA EXCEPCION SI NO EXISTE EL ID
     }
 
-    @PutMapping("books/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateBook (@RequestBody Book book, @PathVariable Long id){
         Optional<Book> bookOptional = bookRepository.findById(id);
 
@@ -54,5 +59,7 @@ public class BookController {
 
         return ResponseEntity.noContent().build();
     }
+
+    //TODO: POST Y VALIDACION
 
 }

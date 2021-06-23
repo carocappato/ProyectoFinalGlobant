@@ -8,19 +8,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@RequestMapping("/reservations")
 @RestController
 public class ReservationController {
 
     @Autowired
     private ReservationRepository reservationRepository;
 
-    @GetMapping("/reservation/{id}")
+    @GetMapping("/{id}")
     public Reservation getReservationById(@PathVariable Long id){
         Optional<Reservation> reservation = reservationRepository.findById(id);
         return reservation.get();
+        //TODO: EXCEPCION SI NO EXISTE EL ID
     }
 
-    @PutMapping("/reservation/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateReservation (@RequestBody Reservation reservation,
                                                      @PathVariable Long id){
         Optional<Reservation> reservationOptional = reservationRepository.findById(id);
@@ -35,9 +37,11 @@ public class ReservationController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/reservation")
+    @PostMapping
     public void newReservation (@RequestBody Reservation reservation){
                 reservationRepository.save(reservation);
+                //TODO: VALIDACION
     }
+
 
 }

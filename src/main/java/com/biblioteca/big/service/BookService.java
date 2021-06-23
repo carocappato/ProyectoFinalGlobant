@@ -14,11 +14,15 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    //public List<Book> getAvailable(Sort title){
-    //    if (book.getStatus()=="DISPONIBLE"){
-    //        return bookRepository.findAll();
-    //    }
-    //    return null;
-    //}
+    @Autowired
+    private Book book;
 
+    /*
+    public List<Book> getByStatus(Sort title){
+        if (book.getStatus()=="DISPONIBLE"){
+            return bookRepository.findAll();
+        }
+        return null;
+    }
+    */
 }

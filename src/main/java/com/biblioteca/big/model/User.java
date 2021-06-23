@@ -21,9 +21,6 @@ public class User {
     @Column(name = "email", length = 100)
     private String email;
 
-    @OneToOne(mappedBy = "userId")
-    private Reservation reservations;
-
     public User(){ }
 
     public User(Long id, String firstName, String lastName, Long documentNumber, String email) {
@@ -74,11 +71,4 @@ public class User {
         this.email = email;
     }
 
-    public Reservation getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(Reservation reservations) {
-        this.reservations = reservations;
-    }
 }

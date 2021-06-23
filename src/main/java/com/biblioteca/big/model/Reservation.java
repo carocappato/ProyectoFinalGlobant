@@ -24,9 +24,6 @@ public class Reservation {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User userId;
 
-    @OneToOne(mappedBy = "reservationId")
-    private Book books;
-
     public Reservation(){ }
 
     public Reservation(Long id, Date startDate, Date endDate, User userId) {
@@ -68,11 +65,4 @@ public class Reservation {
         this.userId = user;
     }
 
-    public Book getBooks() {
-        return books;
-    }
-
-    public void setBooks(Book books) {
-        this.books = books;
-    }
 }

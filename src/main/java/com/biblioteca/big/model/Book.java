@@ -18,9 +18,8 @@ public class Book {
     @Column(name = "author", length = 100)
     private String author;
 
-    @Column(name = "editorial_date")
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private Date editorialDate;
+    @Column(name = "publish_year")
+    private int publishYear;
 
     @Column(name = "book_status", length = 50)
     private String bookStatus;
@@ -31,11 +30,11 @@ public class Book {
 
     public Book() { }
 
-    public Book(Long id, String title, String author, Date editorialDate, String bookStatus, Reservation reservationId) {
+    public Book(Long id, String title, String author, int publishYear, String bookStatus, Reservation reservationId) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.editorialDate = editorialDate;
+        this.publishYear = publishYear;
         this.bookStatus = bookStatus;
         this.reservationId = reservationId;
     }
@@ -64,12 +63,12 @@ public class Book {
         this.author = author;
     }
 
-    public Date getEditorialDate() {
-        return editorialDate;
+    public int getPublishYear() {
+        return publishYear;
     }
 
-    public void setEditorialDate(Date editorialDate) {
-        this.editorialDate = editorialDate;
+    public void setPublishYear(int publishYear) {
+        this.publishYear = publishYear;
     }
 
     public String getStatus() {
