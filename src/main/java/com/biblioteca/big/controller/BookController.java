@@ -2,7 +2,9 @@ package com.biblioteca.big.controller;
 
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.repository.BookRepository;
+import com.biblioteca.big.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,23 +13,28 @@ import java.util.Optional;
 
 @RestController
 public class BookController {
+
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private BookService bookService;
 
     @GetMapping("/books")
     public List<Book> getAllBooks(){
-        return bookRepository.findAll();
+        return bookRepository.findAll(Sort.by("title").ascending());
     }
 
     @GetMapping("/books/{id}")
     public Book getBookById(@PathVariable Long id){
         Optional<Book> book = bookRepository.findById(id);
-
-        //TODO Manejar excepción de libro no encontrado
-
         return book.get();
     }
+
+    //@GetMapping("/books/disponible")
+    //public List<Book> getAllBooksAvailable(){
+    //    return bookService.getAvailable(Sort.by("title").ascending());
+    //}
 
     @DeleteMapping("/books/{id}")
     public void deleteBookById(@PathVariable Long id){
@@ -47,6 +54,5 @@ public class BookController {
 
         return ResponseEntity.noContent().build();
     }
-
 
 }
