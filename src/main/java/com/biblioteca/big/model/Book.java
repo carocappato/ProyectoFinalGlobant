@@ -30,8 +30,7 @@ public class Book {
 
     public Book() { }
 
-    public Book(Long id, String title, String author, int publishYear, String bookStatus, Reservation reservationId) {
-        this.id = id;
+    public Book(String title, String author, int publishYear, String bookStatus, Reservation reservationId) {
         this.title = title;
         this.author = author;
         this.publishYear = publishYear;
@@ -71,12 +70,12 @@ public class Book {
         this.publishYear = publishYear;
     }
 
-    public String getStatus() {
+    public String getBookStatus() {
         return bookStatus;
     }
 
-    public void setStatus(String status) {
-        this.bookStatus = status;
+    public void setBookStatus(String bookStatus) {
+        this.bookStatus = bookStatus;
     }
 
     public Reservation getReservation() {

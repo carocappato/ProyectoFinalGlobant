@@ -1,6 +1,7 @@
 package com.biblioteca.big.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -19,6 +20,7 @@ public class User {
     private Long documentNumber;
 
     @Column(name = "email", length = 100)
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Formato de mail no válido")
     private String email;
 
     public User(){ }
