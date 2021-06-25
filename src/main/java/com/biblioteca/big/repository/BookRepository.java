@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>{
+
     @Query("SELECT b FROM Book b WHERE b.bookStatus = ?1" )
     List<Book> findByStatus(String bookStatus, Sort sort);
 
+    @Query ("SELECT b FROM Book b WHERE b.title = ?1 AND b.author = ?2")
+    Book findByTitleAndAuthor(String title, String author);
 }

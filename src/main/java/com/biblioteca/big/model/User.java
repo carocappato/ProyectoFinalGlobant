@@ -10,23 +10,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name", length = 100)
+    @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", length = 100)
+    @Column(name = "last_name", length = 100, nullable = false)
     private String lastName;
 
-    @Column(name = "document_number")
+    @Column(name = "document_number", nullable = false)
     private Long documentNumber;
 
-    @Column(name = "email", length = 100)
+    @Column(name = "email", length = 100, nullable = false)
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Formato de mail no válido")
     private String email;
 
     public User(){ }
 
-    public User(Long id, String firstName, String lastName, Long documentNumber, String email) {
-        this.id = id;
+    public User(String firstName, String lastName, Long documentNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.documentNumber = documentNumber;
@@ -46,7 +45,7 @@ public class User {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.toUpperCase();
     }
 
     public String getLastName() {
@@ -54,7 +53,7 @@ public class User {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.toUpperCase();
     }
 
     public Long getDocumentNumber() {
@@ -70,7 +69,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toUpperCase();
     }
 
 }

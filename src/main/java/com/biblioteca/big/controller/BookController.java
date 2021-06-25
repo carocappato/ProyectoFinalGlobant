@@ -1,10 +1,10 @@
 package com.biblioteca.big.controller;
 
+import com.biblioteca.big.exception.BookAlreadyExistsException;
 import com.biblioteca.big.exception.BookNotFoundException;
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.repository.BookRepository;
 import com.biblioteca.big.service.BookService;
-import com.sun.source.tree.LambdaExpressionTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -81,6 +81,15 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
-    //TODO: POST Y VALIDACION
+    @PostMapping
+    public ResponseEntity<Object> insertBook (@RequestBody Book book) throws BookAlreadyExistsException {
 
+        Book existsBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
+
+        if (existsBook != null){
+            throw new BookAlreadyExistsException("El libro ya existe");
+        }
+        bookRepository.save(book);
+        return ResponseEntity.status(201).build();
+    }
 }

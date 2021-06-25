@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Locale;
 
 @Entity
 @Table(name = "books")
@@ -51,7 +52,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = title.toUpperCase();
     }
 
     public String getAuthor() {
@@ -59,7 +60,7 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.author = author.toUpperCase();
     }
 
     public int getPublishYear() {
@@ -75,7 +76,7 @@ public class Book {
     }
 
     public void setBookStatus(String bookStatus) {
-        this.bookStatus = bookStatus;
+        this.bookStatus = bookStatus.toUpperCase();
     }
 
     public Reservation getReservation() {
