@@ -1,10 +1,6 @@
 package com.biblioteca.big.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Locale;
 
 @Entity
 @Table(name = "books")
@@ -31,7 +27,11 @@ public class Book {
 
     public Book() { }
 
-    public Book(String title, String author, int publishYear, String bookStatus, Reservation reservationId) {
+    public Book(String title,
+                String author,
+                int publishYear,
+                String bookStatus,
+                Reservation reservationId) {
         this.title = title;
         this.author = author;
         this.publishYear = publishYear;

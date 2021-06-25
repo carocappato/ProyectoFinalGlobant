@@ -20,7 +20,7 @@ public class User {
     private Long documentNumber;
 
     @Column(name = "email", length = 100, nullable = false)
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Formato de mail no válido")
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,6}$", message = "Formato de mail no válido")
     private String email;
 
     public User(){ }
