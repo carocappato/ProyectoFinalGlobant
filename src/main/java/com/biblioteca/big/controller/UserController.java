@@ -23,6 +23,5 @@ public class UserController {
         userService.insertUser(user);
         return ResponseEntity.status(201).build();
     }
-
 }
 

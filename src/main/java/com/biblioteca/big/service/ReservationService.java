@@ -14,13 +14,14 @@ import java.util.Optional;
 
 @Service
 public class ReservationService {
-/*
+
     @Autowired
     private ReservationRepository reservationRepository;
 
     //POST RESERVATION
+    /*
     public void insertReservation (@RequestBody Reservation reservation) throws ReservationAlreadyExistsException{
-        Reservation existsReservation = reservationRepository.findReservationByBookId(reservation.getId());
+        Reservation existsReservation = reservationRepository.findReservationByBookId(reservation.getBookId());
         //TODO VER ESTO DE BUSCAR POR ID DEL LIBRO
         if (existsReservation != null){
             throw new ReservationAlreadyExistsException("El libro ya está reservado");
@@ -53,5 +54,4 @@ public class ReservationService {
         return reservation.get();
     }
     */
-
 }
