@@ -17,7 +17,7 @@ public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
-
+/*
     //POST RESERVATION
     @PostMapping
     public ResponseEntity<Reservation> newReservation(@RequestBody Reservation reservation)
@@ -40,7 +40,7 @@ public class ReservationController {
         reservationService.getExistsReservationById(id);
     }
 
-
+*/
 
 
 
