@@ -15,7 +15,7 @@ public class UserService {
 
     //POST USER
     public void insertUser (@RequestBody User user)
-            throws UserAlreadyExistsException {
+            throws UserAlreadyExistsException, ArithmeticException {
         User olderUser = userRepository.findByDocumentNumber(user.getDocumentNumber());
         if (olderUser != null){
             throw new UserAlreadyExistsException("El usuario ya existe");

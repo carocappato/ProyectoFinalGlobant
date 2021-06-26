@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 public class ReservationService {
-
+/*
     @Autowired
     private ReservationRepository reservationRepository;
 
@@ -52,5 +52,6 @@ public class ReservationService {
         }
         return reservation.get();
     }
+    */
 
 }

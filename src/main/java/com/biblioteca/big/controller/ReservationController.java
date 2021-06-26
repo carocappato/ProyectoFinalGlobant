@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reservations")
 @RestController
 public class ReservationController {
-
+/*
     @Autowired
     private ReservationService reservationService;
 
@@ -42,7 +42,7 @@ public class ReservationController {
 
 
 
-
+*/
 
 
 }
