@@ -25,7 +25,6 @@ class BookServiceTest {
     @Mock
     private BookRepository bookRepositoryUnderTest;
 
-
     @Test
     void itShouldInsertBook() {
         //given
@@ -47,7 +46,11 @@ class BookServiceTest {
 
     @Test
     @Disabled
-    void ItShouldGetAllBooksByStatus() {
+    void ItShouldGetBooksAvailableByStatus() {
+        //when
+        bookRepositoryUnderTest.findByStatus("DISPONIBLE", Sort.by("title"));
+        //then
+        verify(bookRepositoryUnderTest).findByStatus("DISPONIBLE", Sort.by("title"));
     }
 
     @Test
@@ -59,12 +62,10 @@ class BookServiceTest {
         Book secondBook = new Book("Frutillas", "Juana Gomez", 2020,
                 "DISPONIBLE", null);
         secondBook.setId(2);
-        bookRepositoryUnderTest.save(firstBook);
-        bookRepositoryUnderTest.save(secondBook);
         //when
-        Optional<Book> expected = bookRepositoryUnderTest.findById(firstBook.getId());
-        //then
-        assertThat(expected).isEqualTo(firstBook);
+        bookRepositoryUnderTest.findById(1);
+        //
+        verify(bookRepositoryUnderTest).findById(firstBook.getId());
     }
 
     @Test

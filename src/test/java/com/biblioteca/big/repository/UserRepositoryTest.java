@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -18,9 +17,9 @@ class UserRepositoryTest {
     void itShouldFindByDocumentNumber() {
         //given
         User user = new User("Eugenia", "Fernandez",
-                38000111, "eugenia@gmail.com");
+                38000111, "EUGENIA@GMAIL.COM");
         User secondUser = new User("Martina", "Gomez",
-                40999888, "martina@gmail.com");
+                40999888, "MARTINA@GMAIL.COM");
         userRepositoryUnderTest.save(user);
         userRepositoryUnderTest.save(secondUser);
         //when
