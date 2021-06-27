@@ -1,6 +1,7 @@
 package com.biblioteca.big.model;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Pattern;
 
 @Entity
@@ -8,7 +9,7 @@ import javax.validation.constraints.Pattern;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
@@ -17,7 +18,7 @@ public class User {
     private String lastName;
 
     @Column(name = "document_number", nullable = false)
-    private Long documentNumber;
+    private Integer documentNumber;
 
     @Column(name = "email", length = 100, nullable = false)
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,6}$", message = "Formato de mail no válido")
@@ -25,18 +26,18 @@ public class User {
 
     public User(){ }
 
-    public User(String firstName, String lastName, Long documentNumber, String email) {
+    public User(String firstName, String lastName, Integer documentNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.documentNumber = documentNumber;
         this.email = email;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,11 +57,11 @@ public class User {
         this.lastName = lastName.toUpperCase();
     }
 
-    public Long getDocumentNumber() {
+    public Integer getDocumentNumber() {
         return documentNumber;
     }
 
-    public void setDocumentNumber(Long documentNumber) {
+    public void setDocumentNumber(Integer documentNumber) {
         this.documentNumber = documentNumber;
     }
 

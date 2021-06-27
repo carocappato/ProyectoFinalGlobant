@@ -27,7 +27,7 @@ public class BookController {
     //PUT BOOK BY ID
     @PutMapping("/{id}")
     public void updateBook (@RequestBody Book book,
-                            @PathVariable Long id)
+                            @PathVariable Integer id)
             throws BookNotFoundException{
         bookService.updateExistsBook(book, id);
     }
@@ -40,7 +40,7 @@ public class BookController {
 
     //GET BOOK BY ID
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id)
+    public Book getBookById(@PathVariable Integer id)
             throws BookNotFoundException {
         return bookService.getExistsBookById(id);
     }
@@ -53,7 +53,7 @@ public class BookController {
 
     //DELETE BOOK BY ID
     @DeleteMapping("/{id}")
-    public void deleteBookById(@PathVariable Long id) throws BookNotFoundException{
+    public void deleteBookById(@PathVariable Integer id) throws BookNotFoundException{
         bookService.deleteExistsBookById(id);
     }
 }

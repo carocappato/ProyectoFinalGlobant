@@ -26,7 +26,7 @@ public class Reservation {
 
     public Reservation(){ }
 
-    public Reservation(Date startDate, Date endDate, User userId) {
+    public Reservation(Date startDate, Date endDate, User userId){
         this.startDate = startDate;
         this.endDate = endDate;
         this.userId = userId;
