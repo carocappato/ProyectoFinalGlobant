@@ -14,7 +14,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 class BookRepositoryTest {
-
     @Autowired
     private BookRepository bookRepositoryUnderTest;
 
@@ -33,50 +32,85 @@ class BookRepositoryTest {
 
     @Test
     void itShouldFindByAvailableStatus() {
-        //given
-        Book book = new Book("Frutillas", "Juana Gomez", 2020,
-                "DISPONIBLE", null);
-        Book secondBook = new Book("Naranjas", "Juana Gomez", 2020,
-                "RESERVADO", null);
+        //GIVEN
+        Book book = new Book(
+                "Frutillas",
+                "Juana Gomez",
+                2020,
+                "DISPONIBLE",
+                null);
+        Book secondBook = new Book(
+                "Naranjas",
+                "Juana Gomez",
+                2020,
+                "RESERVADO",
+                null);
+
         bookRepositoryUnderTest.save(book);
         bookRepositoryUnderTest.save(secondBook);
+
         List<Book> availableBooks = new ArrayList<>();
         availableBooks.add(book);
-        //when
+
+        //WHEN
         List<Book> expected = bookRepositoryUnderTest.findByStatus("DISPONIBLE", Sort.by("title"));
-        //then
+
+        //THEN
         assertThat(expected).isEqualTo(availableBooks);
     }
 
     @Test
     void itShouldFindByReservedStatus() {
-        //given
-        Book book = new Book("Frutillas", "Juana Gomez", 2020,
-                "DISPONIBLE", null);
-        Book secondBook = new Book("Naranjas", "Juana Gomez", 2020,
-                "RESERVADO", null);
+        //GIVEN
+        Book book = new Book(
+                "Frutillas",
+                "Juana Gomez",
+                2020,
+                "DISPONIBLE",
+                null);
+        Book secondBook = new Book(
+                "Naranjas",
+                "Juana Gomez",
+                2020,
+                "RESERVADO",
+                null);
+
         bookRepositoryUnderTest.save(book);
         bookRepositoryUnderTest.save(secondBook);
+
         List<Book> availableBooks = new ArrayList<>();
         availableBooks.add(secondBook);
-        //when
+
+        //WHEN
         List<Book> expected = bookRepositoryUnderTest.findByStatus("RESERVADO", Sort.by("title"));
-        //then
+
+        //THEN
         assertThat(expected).isEqualTo(availableBooks);
     }
 
     @Test
     void findByTitleAndAuthor() {
-        //given
-        Book book = new Book("Frutillas", "Juana Gomez", 2020,
-                "DISPONIBLE", null);
-        Book secondBook = new Book("Naranjas", "Juana Gomez", 2020,
-                "RESERVADO", null);
+        //GIVEN
+        Book book = new Book(
+                "Frutillas",
+                "Juana Gomez",
+                2020,
+                "DISPONIBLE",
+                null);
+        Book secondBook = new Book(
+                "Naranjas",
+                "Juana Gomez",
+                2020,
+                "RESERVADO",
+                null);
+
         bookRepositoryUnderTest.save(book);
         bookRepositoryUnderTest.save(secondBook);
-        //when
+
+        //WHEN
         Book expected = bookRepositoryUnderTest.findByTitleAndAuthor("Frutillas", "Juana Gomez");
-        //then
+
+        //THEN
         assertThat(expected).isEqualTo(book);
     }
 }

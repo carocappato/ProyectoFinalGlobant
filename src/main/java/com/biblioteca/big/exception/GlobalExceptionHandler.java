@@ -9,32 +9,35 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<?> bookNotFoundException(BookNotFoundException ex,
-                                                   WebRequest request){
+                                                   WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(), request.getDescription(false));
+
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ReservationNotFoundException.class)
     public ResponseEntity<?> reservationNotFoundException(ReservationNotFoundException res,
-                                                          WebRequest request){
+                                                          WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(res.getMessage(), request.getDescription(false));
+
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BookAlreadyExistsException.class)
     public ResponseEntity<?> bookAlreadyExistsException(BookAlreadyExistsException ex,
-                                                        WebRequest request){
+                                                        WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(),request.getDescription(false));
+
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ReservationAlreadyExistsException.class)
     public ResponseEntity<?> reservationAlreadyExistsException(ReservationNotFoundException ex,
-                                                        WebRequest request){
+                                                               WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(),request.getDescription(false));
+
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
@@ -42,8 +45,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> userAlreadyExistsException(UserAlreadyExistsException ex,
                                                         WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(),request.getDescription(false));
+
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IllegalEmailFormatException.class)
+    public ResponseEntity<?> illegalEmailFormatException(IllegalEmailFormatException ex,
+                                                         WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(),request.getDescription(false));
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 }
 

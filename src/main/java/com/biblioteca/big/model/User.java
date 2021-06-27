@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
@@ -18,31 +18,31 @@ public class User {
     private String lastName;
 
     @Column(name = "document_number", nullable = false)
-    private Integer documentNumber;
+    private Long documentNumber;
 
     @Column(name = "email", length = 100, nullable = false)
-    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,6}$", message = "Formato de mail no válido")
+    @Pattern(regexp = "^(.+)@(.+)$", message = "Formato de mail no válido")
     private String email;
 
     public User(){ }
 
-    public User(String firstName, String lastName, Integer documentNumber, String email) {
+    public User(String firstName, String lastName, Long documentNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.documentNumber = documentNumber;
         this.email = email;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstName.toUpperCase();
     }
 
     public void setFirstName(String firstName) {
@@ -50,23 +50,23 @@ public class User {
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName.toUpperCase();
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName.toUpperCase();
     }
 
-    public Integer getDocumentNumber() {
+    public Long getDocumentNumber() {
         return documentNumber;
     }
 
-    public void setDocumentNumber(Integer documentNumber) {
+    public void setDocumentNumber(Long documentNumber) {
         this.documentNumber = documentNumber;
     }
 
     public String getEmail() {
-        return email;
+        return email.toUpperCase();
     }
 
     public void setEmail(String email) {

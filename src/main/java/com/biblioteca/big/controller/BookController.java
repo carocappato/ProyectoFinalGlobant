@@ -12,23 +12,21 @@ import java.util.List;
 @RequestMapping("/books")
 @RestController
 public class BookController {
-
     @Autowired
     private BookService bookService;
 
     //POST BOOK
     @PostMapping
-    public ResponseEntity<Book> newBook(@RequestBody Book book)
-            throws BookAlreadyExistsException {
+    public ResponseEntity<Book> newBook(@RequestBody Book book) throws BookAlreadyExistsException {
         bookService.insertBook(book);
+
         return ResponseEntity.status(201).build();
     }
 
     //PUT BOOK BY ID
     @PutMapping("/{id}")
     public void updateBook (@RequestBody Book book,
-                            @PathVariable Integer id)
-            throws BookNotFoundException{
+                            @PathVariable("id") Long id) throws BookNotFoundException {
         bookService.updateExistsBook(book, id);
     }
 
@@ -40,20 +38,19 @@ public class BookController {
 
     //GET BOOK BY ID
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Integer id)
-            throws BookNotFoundException {
+    public Book getBookById(@PathVariable("id") Long id) throws BookNotFoundException {
         return bookService.getExistsBookById(id);
     }
 
     //GET BOOK BY STATUS
     @GetMapping("/status/{status}")
-    public List<Book> getBooksByStatus(@PathVariable("status") String status){
+    public List<Book> getBooksByStatus(@PathVariable("status") String status) {
         return bookService.getAllBooksByStatus(status);
     }
 
     //DELETE BOOK BY ID
     @DeleteMapping("/{id}")
-    public void deleteBookById(@PathVariable Integer id) throws BookNotFoundException{
+    public void deleteBookById(@PathVariable("id") Long id) throws BookNotFoundException {
         bookService.deleteExistsBookById(id);
     }
 }

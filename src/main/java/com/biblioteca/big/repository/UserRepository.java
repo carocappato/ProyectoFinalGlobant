@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.documentNumber = ?1")
-    User findByDocumentNumber(Integer documentNumber);
+    User findByDocumentNumber(Long documentNumber);
 
 }

@@ -7,18 +7,18 @@ import javax.persistence.*;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "title", length = 100)
+    @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @Column(name = "author", length = 100)
+    @Column(name = "author", length = 100, nullable = false)
     private String author;
 
-    @Column(name = "publish_year")
+    @Column(name = "publish_year", nullable = false)
     private int publishYear;
 
-    @Column(name = "book_status", length = 50)
+    @Column(name = "book_status", length = 50, nullable = false)
     private String bookStatus;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -39,16 +39,16 @@ public class Book {
         this.reservationId = reservationId;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getTitle() {
-        return title;
+        return title.toUpperCase();
     }
 
     public void setTitle(String title) {
@@ -56,7 +56,7 @@ public class Book {
     }
 
     public String getAuthor() {
-        return author;
+        return author.toUpperCase();
     }
 
     public void setAuthor(String author) {
@@ -72,7 +72,7 @@ public class Book {
     }
 
     public String getBookStatus() {
-        return bookStatus;
+        return bookStatus.toUpperCase();
     }
 
     public void setBookStatus(String bookStatus) {

@@ -23,16 +23,17 @@ class UserServiceTest {
 
     @Test
     void itShouldInsertUser() {
-        //given
+        //GIVEN
         User user = new User(
                 "Margarita",
                 "Lopez",
-                35643278,
-                "MARGARITALOPEZ@GMAIL.COM");
+                35643278L,
+                "margaritalopez@gmail.com");
 
-        //when
+        //WHEN
         userRepositoryUnderTest.save(user);
-        //then
+
+        //THEN
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepositoryUnderTest).save(userArgumentCaptor.capture());
         User capturedUser = userArgumentCaptor.getValue();

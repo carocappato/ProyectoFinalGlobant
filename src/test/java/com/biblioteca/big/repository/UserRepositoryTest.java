@@ -15,16 +15,25 @@ class UserRepositoryTest {
 
     @Test
     void itShouldFindByDocumentNumber() {
-        //given
-        User user = new User("Eugenia", "Fernandez",
-                38000111, "EUGENIA@GMAIL.COM");
-        User secondUser = new User("Martina", "Gomez",
-                40999888, "MARTINA@GMAIL.COM");
-        userRepositoryUnderTest.save(user);
+        //GIVEN
+        User firstUser = new User(
+                "Eugenia",
+                "Fernandez",
+                38000111L,
+                "eugenia@gmail.com");
+
+        User secondUser = new User(
+                "Martina",
+                "Gomez",
+                40999888L,
+                "martina@gmail.com");
+        userRepositoryUnderTest.save(firstUser);
         userRepositoryUnderTest.save(secondUser);
-        //when
-        User expected = userRepositoryUnderTest.findByDocumentNumber(38000111);
-        //then
-        assertThat(expected).isEqualTo(user);
+
+        //WHEN
+        User expected = userRepositoryUnderTest.findByDocumentNumber(38000111L);
+
+        //THEN
+        assertThat(expected).isEqualTo(firstUser);
     }
 }

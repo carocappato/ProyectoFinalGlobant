@@ -9,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-
 @RequestMapping("/reservations")
 @RestController
 public class ReservationController {
 /*
     @Autowired
     private ReservationService reservationService;
-/*
+
     //POST RESERVATION
     @PostMapping
     public ResponseEntity<Reservation> newReservation(@RequestBody Reservation reservation)
@@ -39,9 +37,5 @@ public class ReservationController {
             throws ReservationNotFoundException {
         reservationService.getExistsReservationById(id);
     }
-
 */
-
-
-
 }

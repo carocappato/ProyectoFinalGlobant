@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer>{
+public interface BookRepository extends JpaRepository<Book, Long>{
 
     @Query("SELECT b FROM Book b WHERE b.bookStatus = ?1" )
     List<Book> findByStatus(String bookStatus, Sort sort);
