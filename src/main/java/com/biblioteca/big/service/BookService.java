@@ -33,7 +33,7 @@ public class BookService {
 
     //PUT BOOK BY ID
     public void updateExistsBook (@RequestBody Book book,
-                                  @PathVariable Long id)
+                                  @PathVariable Integer id)
             throws BookNotFoundException{
         Optional<Book> bookOptional = bookRepository.findById(id);
         if(!bookOptional.isPresent()) {
@@ -59,7 +59,7 @@ public class BookService {
     }
 
     //GET BOOK BY ID
-    public Book getExistsBookById(@PathVariable Long id) throws BookNotFoundException {
+    public Book getExistsBookById(@PathVariable Integer id) throws BookNotFoundException {
         Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent()){
             throw new BookNotFoundException("No se encontró el ID: " + id);
@@ -73,7 +73,7 @@ public class BookService {
     }
 
     //DELETE BOOK BY ID
-    public void deleteExistsBookById(@PathVariable Long id) throws BookNotFoundException {
+    public void deleteExistsBookById(@PathVariable Integer id) throws BookNotFoundException {
         Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent()){
             throw new BookNotFoundException("No se encontró el ID: " + id);
