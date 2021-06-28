@@ -8,6 +8,6 @@ public class BookAlreadyExistsException {
     @Test
     @Disabled
     @DisplayName("If the book already exists in database it should throw an exception")
-    public void shouldThrowBookAlreadyExistsException() {
+    public void bookAlreadyExistsExceptionTest() {
     }
 }

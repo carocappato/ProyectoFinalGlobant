@@ -21,7 +21,7 @@ public class IllegalEmailFormatExceptionTest {
 
     @Test
     @DisplayName("It should throw an exception if the email format is not valid")
-    public void shouldThrowIllegalEmailFormatException() {
+    public void illegalEmailFormatExceptionTest() {
         //GIVEN
         User user = new User();
         user.setFirstName("John");

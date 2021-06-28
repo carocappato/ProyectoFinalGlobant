@@ -26,8 +26,8 @@ class BookServiceTest {
     private BookRepository bookRepositoryUnderTest;
 
     @Test
-    @DisplayName("It should insert a book in database")
-    void itShouldInsertBook() {
+    @DisplayName("It should insert the given book in database")
+    public void insertBookTest() {
         //GIVEN
         Book book = new Book("Frutillas","Juana Gomez",2020,"DISPONIBLE",null);
 
@@ -44,14 +44,14 @@ class BookServiceTest {
 
     @Test
     @Disabled
-    @DisplayName("It should update existing book")
-    void itShouldUpdateExistsBook() {
+    @DisplayName("It should update the given existing book")
+    public void updateExistsBook() {
     }
 
     @Test
     @Disabled
     @DisplayName("It should get an available book")
-    void ItShouldGetBooksAvailableByStatus() {
+    public void getBooksAvailableByStatusTest() {
         //WHEN
         bookRepositoryUnderTest.findByStatus("DISPONIBLE", Sort.by("title"));
 
@@ -61,7 +61,7 @@ class BookServiceTest {
 
     @Test
     @DisplayName("It should get an existing book by its id")
-    void itShouldGetExistsBookById() {
+    public void getExistsBookByIdTest() {
         //GIVEN
         Book firstBook = new Book("Frutillas","Juana Gomez",2020,"DISPONIBLE",null);
         firstBook.setId(1L);
@@ -78,7 +78,7 @@ class BookServiceTest {
 
     @Test
     @DisplayName("It should get all existing books")
-    void itShouldGetAllExistsBooks() {
+    public void getAllExistsBooksTest() {
         //WHEN
         bookRepositoryUnderTest.findAll(Sort.by("title").ascending());
 
@@ -89,6 +89,6 @@ class BookServiceTest {
     @Test
     @Disabled
     @DisplayName("It should delete an existing book by its id")
-    void itShouldDeleteExistsBookById() {
+    void deleteExistsBookByIdTest() {
     }
 }
