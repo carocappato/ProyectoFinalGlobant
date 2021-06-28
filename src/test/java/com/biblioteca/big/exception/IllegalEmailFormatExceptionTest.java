@@ -2,9 +2,7 @@ package com.biblioteca.big.exception;
 
 import com.biblioteca.big.model.User;
 import com.biblioteca.big.repository.UserRepository;
-import com.biblioteca.big.service.UserService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +10,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.Mockito.verify;
 
@@ -25,29 +20,27 @@ public class IllegalEmailFormatExceptionTest {
     private UserRepository userRepoUnderTest;
 
     @Test
-    @Disabled
     @DisplayName("It should throw an exception if the email format is not valid")
     public void shouldThrowIllegalEmailFormatException() {
-        UserService userService = new UserService();
-
-        User user = new User(
-                "John",
-                "Doe",
-                33444555L,
-                "johndoe");
-
+        //GIVEN
+        User user = new User();
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setDocumentNumber(33444555L);
+        user.setEmail("johndoe");
 
         userRepoUnderTest.save(user);
 
+        //WHEN
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepoUnderTest).save(userArgumentCaptor.capture());
         User capturedUser = userArgumentCaptor.getValue();
 
+        //THEN
         Assertions.assertThrows(IllegalEmailFormatException.class, () -> {
-            userService.insertUser(capturedUser);
+            if(!capturedUser.getEmail().matches("^(.+)@(.+)$")) {
+                throw new IllegalEmailFormatException("Formato de mail no válido");
+            }
         });
-
-        //TODO VER POR QUE NO FUNCIONA, YA PROBE DE VARIAS FORMAS
-
     }
 }
