@@ -21,7 +21,7 @@ public class Book {
     @Column(name = "book_status", length = 50, nullable = false)
     private String bookStatus;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "reservation_id", referencedColumnName = "id")
     private Reservation reservationId;
 

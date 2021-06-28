@@ -20,16 +20,21 @@ public class Reservation {
     @JsonFormat(pattern="dd-MM-yyyy")
     private Date endDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User userId;
 
+    @OneToOne(targetEntity = Book.class)
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
+    private Long bookId;
+
     public Reservation(){ }
 
-    public Reservation(Date startDate, Date endDate, User userId){
+    public Reservation(Date startDate, Date endDate, User userId, Long bookId){
         this.startDate = startDate;
         this.endDate = endDate;
         this.userId = userId;
+        this.bookId = bookId;
     }
 
     public Long getId() {
@@ -60,8 +65,11 @@ public class Reservation {
         return userId;
     }
 
-    public void setUser(User user) {
-        this.userId = user;
+    public void setUser(User userId) {
+        this.userId = userId;
     }
 
+    public Long getBookId(){ return bookId; }
+
+    public void setUserId(Long bookId){ this.bookId = bookId; }
 }
