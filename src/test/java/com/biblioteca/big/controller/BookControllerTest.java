@@ -3,7 +3,6 @@ package com.biblioteca.big.controller;
 import com.biblioteca.big.exception.BookAlreadyExistsException;
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.service.BookService;
-import com.biblioteca.big.service.UserService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)

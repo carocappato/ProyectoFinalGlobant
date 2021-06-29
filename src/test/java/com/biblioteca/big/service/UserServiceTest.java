@@ -37,11 +37,6 @@ class UserServiceTest {
     @Captor
     private ArgumentCaptor<User> userArgumentCaptor;
 
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-    }
-
     @Test
     @DisplayName("It should insert the given user in database")
     public void insertUserTest() throws IllegalEmailFormatException, UserAlreadyExistsException {
