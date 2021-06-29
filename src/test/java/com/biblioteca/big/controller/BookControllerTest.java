@@ -2,67 +2,97 @@ package com.biblioteca.big.controller;
 
 import com.biblioteca.big.exception.BookAlreadyExistsException;
 import com.biblioteca.big.model.Book;
-import com.biblioteca.big.service.BookService;
+import com.biblioteca.big.repository.BookRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.verify;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-@ExtendWith(MockitoExtension.class)
+import static org.mockito.BDDMockito.given;
+import static org.springframework.http.ResponseEntity.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+
+
+
+@SpringBootTest
+@AutoConfigureMockMvc
 class BookControllerTest {
-    @InjectMocks
-    private BookService bookServiceUnderTest;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Captor
-    ArgumentCaptor<Book> bookArgumentCaptor;
+    @MockBean
+    private BookRepository bookRepository;
+
 
     @Test
-    @Disabled
-    @DisplayName("It should insert a book in database")
-    public void insertBookTest() throws BookAlreadyExistsException {
-        //GIVEN
-        Book book = new Book("Frutillas","Juana Gomez",2020,"Disponible",null);
+    @DisplayName("It should update the given book by its ID and return the expected HTTP response")
+    public void updateBook() {
 
-        //WHEN
-        bookServiceUnderTest.insertBook(book);
 
-        //THEN
-        ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
-        verify(bookServiceUnderTest).insertBook(bookArgumentCaptor.capture());
-        Book capturedBook = bookArgumentCaptor.getValue();
-
-        assertThat(capturedBook).isEqualTo(book);
     }
 
     @Test
-    @Disabled
-    void updateBook() {
+    @DisplayName("It checks if the method returns the list of books and the expected HTTP responsee")
+    public void getAllBooksTest() throws Exception {
+        Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible", null);
+        Book bookTwo = new Book(1L,"Second Book", "Second Author", 2000, "Disponible", null);
+
+        List<Book> listAllBooks = Arrays.asList(bookOne, bookTwo);
+
+        given(bookRepository.findAll()).willReturn(listAllBooks);
+
+        mockMvc.perform(get("/books")).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    @Disabled
-    void getAllBooks() {
+    @DisplayName("It checks if the given ID returns the book and the expected HTTP response")
+    public void getBookById() throws Exception {
+        Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible", null);
+
+        given(bookRepository.findById(bookOne.getId())).willReturn(Optional.of(bookOne));
+
+        mockMvc.perform(get("/books/" + bookOne.getId().toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    @Disabled
-    void getBookById() {
+    @DisplayName("It checks if the given status returns the list of books and the expected HTTP response")
+    public void getBooksByStatus() throws Exception {
+        Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible", null);
+        Book bookTwo = new Book(1L,"Second Book", "Second Author", 2000, "Disponible", null);
+
+        List<Book> bookList = Arrays.asList(bookOne, bookTwo);
+
+        given(bookRepository.findByStatus("Disponible", Sort.by("title"))).willReturn(bookList);
+
+        mockMvc.perform(get("/books/status/" + bookOne.getBookStatus()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    @Disabled
-    void getBooksByStatus() {
-    }
+    @DisplayName("It checks if the given ID delete the book and returns the expected HTTP response")
+    public void deleteBookById() throws Exception {
+        Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible", null);
 
-    @Test
-    @Disabled
-    void deleteBookById() {
+        given(bookRepository.findById(bookOne.getId())).willReturn(Optional.of(bookOne));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/books/" + bookOne.getId().toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
