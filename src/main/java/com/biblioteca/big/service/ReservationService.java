@@ -34,34 +34,33 @@ public class ReservationService {
     private UserRepository userRepository;
 
     //POST RESERVATION
-    public void insertReservation(@RequestBody Reservation reservation)
-            throws ReservationAlreadyExistsException, BookNotFoundException, UserAlreadyExistsException {
-
+    public void insertReservation(@RequestBody Reservation reservation) throws ReservationAlreadyExistsException, BookNotFoundException, UserAlreadyExistsException {
         Optional<Book> book = bookRepository.findById(reservation.getBookId());
+        User existsUser = userRepository.findByDocumentNumber(reservation.getUser().getDocumentNumber());
+        Reservation existsReservation = reservationRepository.findByBookId(reservation.getBookId());
+
         if(book.isEmpty()) {
             throw new BookNotFoundException("No se encontró el ID: " + reservation.getBookId());
         }
 
-        User existsUser = userRepository.findByDocumentNumber(reservation.getUser().getDocumentNumber());
         if (existsUser != null){
             throw new UserAlreadyExistsException("No se puede");
         }
 
-        Reservation existsReservation = reservationRepository.findByBookId(reservation.getBookId());
         if (existsReservation != null){
             throw new ReservationAlreadyExistsException("El libro ya está reservado");
         }
 
-        bookService.getExistsBookById(reservation.getBookId()).setBookStatus("RESERVADO");
+        bookService.getBookById(reservation.getBookId()).setBookStatus("RESERVADO");
         reservationRepository.save(reservation);
     }
 
 
     //PUT RESERVATION X BOOKID
     public void updateExistsReservationByBookId (@RequestBody Reservation reservation,
-                                         @PathVariable Long bookId)
-            throws ReservationNotFoundException {
+                                                 @PathVariable Long bookId) throws ReservationNotFoundException {
         Reservation existsReservation = reservationRepository.findByBookId(bookId);
+
         if (existsReservation == null){
             throw new ReservationNotFoundException("La reserva no existe");
         }
@@ -69,8 +68,7 @@ public class ReservationService {
     }
 
     //GET RESERVATION X BOOKID
-    public Reservation getExistsReservationByBookId(@PathVariable Long bookId)
-            throws ReservationNotFoundException{
+    public Reservation getExistsReservationByBookId(@PathVariable Long bookId) throws ReservationNotFoundException {
         Reservation existsReservation = reservationRepository.findByBookId(bookId);
         if (existsReservation == null){
             throw new ReservationNotFoundException("La reserva no existe");

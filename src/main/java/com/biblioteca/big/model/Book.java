@@ -1,7 +1,10 @@
 package com.biblioteca.big.model;
 
+import lombok.AllArgsConstructor;
+
 import javax.persistence.*;
 
+@AllArgsConstructor
 @Entity
 @Table(name = "books")
 public class Book {

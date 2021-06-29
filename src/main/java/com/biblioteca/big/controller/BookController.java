@@ -17,7 +17,7 @@ public class BookController {
 
     //POST BOOK
     @PostMapping
-    public ResponseEntity<Book> newBook(@RequestBody Book book) throws BookAlreadyExistsException {
+    public ResponseEntity<Book> insertBook(@RequestBody Book book) throws BookAlreadyExistsException {
         bookService.insertBook(book);
 
         return ResponseEntity.status(201).build();
@@ -27,31 +27,31 @@ public class BookController {
     @PutMapping("/{id}")
     public void updateBook (@RequestBody Book book,
                             @PathVariable("id") Long id) throws BookNotFoundException {
-        bookService.updateExistsBook(book, id);
+        bookService.updateBook(book, id);
     }
 
     //GET ALL BOOKS
     @GetMapping
     public List<Book> getAllBooks(){
-        return bookService.getAllExistsBooks();
+        return bookService.getAllBooks();
     }
 
     //GET BOOK BY ID
     @GetMapping("/{id}")
     public Book getBookById(@PathVariable("id") Long id) throws BookNotFoundException {
-        return bookService.getExistsBookById(id);
+        return bookService.getBookById(id);
     }
 
     //GET BOOK BY STATUS
     @GetMapping("/status/{status}")
     public List<Book> getBooksByStatus(@PathVariable("status") String status) {
-        return bookService.getAllBooksByStatus(status);
+        return bookService.getBooksByStatus(status);
     }
 
     //DELETE BOOK BY ID
     @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable("id") Long id) throws BookNotFoundException {
-        bookService.deleteExistsBookById(id);
+        bookService.deleteBookById(id);
     }
 }
 

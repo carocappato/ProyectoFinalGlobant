@@ -5,6 +5,7 @@ import com.biblioteca.big.exception.BookNotFoundException;
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.repository.BookRepository;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class BookService {
     @Autowired
@@ -33,8 +35,8 @@ public class BookService {
     }
 
     //PUT BOOK BY ID
-    public void updateExistsBook (@RequestBody Book book,
-                                  @PathVariable Long id) throws BookNotFoundException {
+    public void updateBook (@RequestBody Book book,
+                            @PathVariable("id") Long id) throws BookNotFoundException {
         Optional<Book> bookOptional = bookRepository.findById(id);
 
         if(bookOptional.isEmpty()) {
@@ -48,7 +50,7 @@ public class BookService {
     }
 
     //GET BOOK BY STATUS
-    public List<Book> getAllBooksByStatus(@PathVariable("status") String status) {
+    public List<Book> getBooksByStatus(@PathVariable("status") String status) {
         List<Book> books = new ArrayList<>();
 
         if(status.equals("DISPONIBLE")) {
@@ -63,7 +65,7 @@ public class BookService {
     }
 
     //GET BOOK BY ID
-    public Book getExistsBookById(@PathVariable Long id) throws BookNotFoundException {
+    public Book getBookById(@PathVariable("id") Long id) throws BookNotFoundException {
         Optional<Book> book = bookRepository.findById(id);
 
         if(book.isEmpty()) {
@@ -74,12 +76,12 @@ public class BookService {
     }
 
     //GET ALL BOOKS
-    public List<Book> getAllExistsBooks() {
+    public List<Book> getAllBooks() {
         return bookRepository.findAll(Sort.by("title").ascending());
     }
 
     //DELETE BOOK BY ID
-    public void deleteExistsBookById(@PathVariable Long id) throws BookNotFoundException {
+    public void deleteBookById(@PathVariable("id") Long id) throws BookNotFoundException {
         Optional<Book> book = bookRepository.findById(id);
 
         if(book.isEmpty()){

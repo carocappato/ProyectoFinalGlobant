@@ -1,42 +1,93 @@
 package com.biblioteca.big.service;
 
-import com.biblioteca.big.model.Book;
+import com.biblioteca.big.exception.IllegalEmailFormatException;
+import com.biblioteca.big.exception.UserAlreadyExistsException;
 import com.biblioteca.big.model.User;
 import com.biblioteca.big.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@DataJpaTest
+
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-
     @Mock
-    private UserRepository userRepositoryUnderTest;
+    private UserRepository userRepository;
+
+    @InjectMocks
+    private UserService userServiceUnderTest;
+
+    @Captor
+    private ArgumentCaptor<Long> idDocumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<User> userArgumentCaptor;
+
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
+    }
 
     @Test
-    void itShouldInsertUser() {
-        //GIVEN
-        User user = new User(
-                "Margarita",
-                "Lopez",
-                35643278L,
-                "margaritalopez@gmail.com");
+    @DisplayName("It should insert the given user in database")
+    public void insertUserTest() throws IllegalEmailFormatException, UserAlreadyExistsException {
+        User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
 
-        //WHEN
-        userRepositoryUnderTest.save(user);
+        userServiceUnderTest.insertUser(user);
 
-        //THEN
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepositoryUnderTest).save(userArgumentCaptor.capture());
+        userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userArgumentCaptor.capture());
         User capturedUser = userArgumentCaptor.getValue();
+
         assertThat(capturedUser).isEqualTo(user);
     }
+
+    @Test
+    @DisplayName("It should throw an exception if the email format is not valid")
+    public void illegalEmailFormatExceptionTest() throws IllegalEmailFormatException, UserAlreadyExistsException {
+        //GIVEN
+        User user = new User("John", "Doe", 33444555L,"johndoe");
+
+        //WHEN
+        //THEN
+        Assertions.assertThrows(IllegalEmailFormatException.class, () -> {
+            userServiceUnderTest.insertUser(user);
+        });
+
+        verify(userRepository).findByDocumentNumber(idDocumentCaptor.capture());
+        assertThat(idDocumentCaptor.getValue()).isEqualTo(user.getDocumentNumber());
+        verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("It should throw an exception if the user already exists")
+    public void userAlreadyExistsExceptionTest() throws IllegalEmailFormatException, UserAlreadyExistsException {
+        //GIVEN
+        User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
+
+        given(userRepository.findByDocumentNumber(user.getDocumentNumber())).willReturn(user);
+
+        //WHEN
+        //THEN
+        assertThatThrownBy(() -> userServiceUnderTest.insertUser(user))
+                .isInstanceOf(UserAlreadyExistsException.class)
+                .hasMessageContaining("El usuario ya existe");
+
+        verify(userRepository, never()).save(any());
+    }
+
 }
