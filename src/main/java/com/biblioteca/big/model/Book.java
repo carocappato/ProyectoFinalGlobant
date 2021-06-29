@@ -24,8 +24,7 @@ public class Book {
     @Column(name = "book_status", length = 50, nullable = false)
     private String bookStatus;
 
-    @OneToOne
-    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "book")
     private Reservation reservationId;
 
     public Book() { }

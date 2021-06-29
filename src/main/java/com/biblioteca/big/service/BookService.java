@@ -35,8 +35,7 @@ public class BookService {
     }
 
     //PUT BOOK BY ID
-    public void updateBook (@RequestBody Book book,
-                            @PathVariable("id") Long id) throws BookNotFoundException {
+    public void updateBook (@RequestBody Book book, @PathVariable("id") Long id) throws BookNotFoundException {
         Optional<Book> bookOptional = bookRepository.findById(id);
 
         if(bookOptional.isEmpty()) {
@@ -53,11 +52,11 @@ public class BookService {
     public List<Book> getBooksByStatus(@PathVariable("status") String status) {
         List<Book> books = new ArrayList<>();
 
-        if(status.equals("DISPONIBLE")) {
-            books = bookRepository.findByStatus("DISPONIBLE", Sort.by("title").ascending());
+        if(status.equals("Disponible")) {
+            books = bookRepository.findByStatus("Disponible", Sort.by("title").ascending());
             return books;
-        } else if (status.equals("RESERVADO")) {
-            books = bookRepository.findByStatus("RESERVADO", Sort.by("title").ascending());
+        } else if (status.equals("Reservado")) {
+            books = bookRepository.findByStatus("Reservado", Sort.by("title").ascending());
             return books;
         }
 

@@ -53,7 +53,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("It should throw an exception if the email format is not valid")
-    public void illegalEmailFormatExceptionTest() throws IllegalEmailFormatException, UserAlreadyExistsException {
+    public void illegalEmailFormatExceptionTest() {
         //GIVEN
         User user = new User("John", "Doe", 33444555L,"johndoe");
 
@@ -70,7 +70,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("It should throw an exception if the user already exists")
-    public void userAlreadyExistsExceptionTest() throws IllegalEmailFormatException, UserAlreadyExistsException {
+    public void userAlreadyExistsExceptionTest() {
         //GIVEN
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
 

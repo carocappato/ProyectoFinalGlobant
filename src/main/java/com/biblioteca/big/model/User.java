@@ -1,7 +1,6 @@
 package com.biblioteca.big.model;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Pattern;
 
 @Entity

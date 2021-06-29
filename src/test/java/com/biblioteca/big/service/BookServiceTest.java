@@ -18,39 +18,13 @@ import java.util.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.floatThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
-    /*
-    @Test
-    @Disabled
-    @DisplayName("It should update existing book")
-    void itShouldUpdateExistsBook() {
-    }
-
-    @Test
-    @Disabled
-    @DisplayName("It should get an available book")
-    void ItShouldGetBooksAvailableByStatus() {
-        //WHEN
-        bookRepositoryUnderTest.findByStatus("DISPONIBLE", Sort.by("title"));
-
-        //THEN
-        verify(bookRepositoryUnderTest).findByStatus("DISPONIBLE", Sort.by("title"));
-    }
-
-
-
-    @Test
-    @Disabled
-    @DisplayName("It should delete an existing book by its id")
-    void itShouldDeleteExistsBookById() {
-    }
-    */
-
     @Mock
     private BookRepository bookRepository;
 
@@ -72,54 +46,6 @@ class BookServiceTest {
     public void tearDown() { bookRepository.deleteAll(); }
 
     @Test
-    @DisplayName("It should get a list of all books in database")
-    public void getAllBooksTest() {
-        //WHEN
-        bookServiceUnderTest.getAllBooks();
-
-        //THEN
-        verify(bookRepository).findAll(Sort.by("title").ascending());
-    }
-
-    @Test
-    @DisplayName("It should get a book by a given ID")
-    public void getBookByIdTest() throws BookNotFoundException {
-        Book book = new Book(1L, "Book Title", "Book Author", 2000, "Disponible", null);
-
-        bookRepository.save(book);
-
-        given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
-
-        bookServiceUnderTest.getBookById(book.getId());
-
-        verify(bookRepository).findById(idArgumentCaptor.capture());
-        assertThat(idArgumentCaptor.getValue()).isEqualTo(book.getId());
-    }
-
-    @Test
-    @DisplayName("It shouldn't be able to get a book since it doesn't exist")
-    public void cantGetBookByIdTest() throws BookNotFoundException{
-        long id = 1;
-        Optional<Book> book = bookRepository.findById(id);
-
-        assertThatThrownBy(() -> bookServiceUnderTest.getBookById(id))
-                .isInstanceOf(BookNotFoundException.class)
-                .hasMessageContaining("No se encontró el ID: " + id);
-
-        assertThat(book).isEmpty();
-    }
-
-
-    /*
-    @Test
-    @DisplayName("It should get a book by a given status")
-    public void getBookByAvailableStatusTest(){
-        //TODO: TEST AVAILABLE STATUS
-    }
-    */
-
-
-    @Test
     @DisplayName("It should add a book to the database")
     public void insertBookTest() throws BookAlreadyExistsException {
         //GIVEN
@@ -138,7 +64,7 @@ class BookServiceTest {
 
     @Test
     @DisplayName("It should throw an exception when adding a book that already exists to the database")
-    public void insertExistingBookTest() throws BookAlreadyExistsException {
+    public void insertExistingBookTest() {
         //GIVEN
         Book book = new Book("Book Name", "Book Author", 2000, "Disponible", null);
 
@@ -153,33 +79,118 @@ class BookServiceTest {
         verify(bookRepository, never()).save(any());
     }
 
-
-    //TODO: TEST DELETE
-    /*
     @Test
-    public void deleteBookById(){
-        //GIVEN
-        long id = 2;
+    @DisplayName("It should update a book by it's given ID")
+    public void updateBookTest() throws BookNotFoundException{
+        Book book = new Book(1L, "Book Title", "Book Author", 2000, "Disponible", null);
+        bookRepository.save(book);
 
+        given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
+        bookServiceUnderTest.updateBook(book, book.getId());
+
+        //TODO terminar
     }
 
+    @Test
+    @DisplayName("It should update a book by it's given ID")
+    public void cantUpdateBookTest() throws BookNotFoundException{
+        long id = 2;
+        Book book = new Book(1L, "Book Title", "Book Author", 2000, "Disponible", null);
+
+        assertThatThrownBy(() -> bookServiceUnderTest.updateBook(book, id))
+                .isInstanceOf(BookNotFoundException.class)
+                .hasMessageContaining("El libro no existe");
+
+        verify(bookRepository).findById(idArgumentCaptor.capture());
+        assertThat(idArgumentCaptor.getValue()).isEqualTo(id);
+
+        verify(bookRepository, never()).save(any());
+    }
 
     @Test
-    public void deleteBookNonExistingByIdTest() {
+    @DisplayName("It should get a list of all books in database")
+    public void getAllBooksTest() {
+        //WHEN
+        bookServiceUnderTest.getAllBooks();
+
+        //THEN
+        verify(bookRepository).findAll(Sort.by("title").ascending());
+    }
+
+    @Test
+    @DisplayName("It should get a book by a given ID")
+    public void getBookByIdTest() throws BookNotFoundException {
         //GIVEN
+        Book book = new Book(1L, "Book Title", "Book Author", 2000, "Disponible", null);
+        bookRepository.save(book);
+
+        given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
+        bookServiceUnderTest.getBookById(book.getId());
+
+        verify(bookRepository).findById(idArgumentCaptor.capture());
+        assertThat(idArgumentCaptor.getValue()).isEqualTo(book.getId());
+    }
+
+    @Test
+    @DisplayName("It shouldn't be able to get a book since it doesn't exist")
+    public void cantGetBookByIdTest(){
         long id = 1;
 
-        given(bookRepository.findById(id)).willReturn(bookRepository.findById(id));
-
-        assertThatThrownBy(()-> bookServiceUnderTest.deleteBookById(id))
+        assertThatThrownBy(() -> bookServiceUnderTest.getBookById(id))
                 .isInstanceOf(BookNotFoundException.class)
                 .hasMessageContaining("No se encontró el ID: " + id);
 
-        verify(bookRepository, never()).deleteById(any());
-
-
+        verify(bookRepository).findById(id);
     }
 
-    */
+    @Test
+    @DisplayName("It should get available books")
+    public void getBookByAvailableStatusTest(){
+        //WHEN
+        Book book = new Book(1L, "Book Title", "Book Author", 2000, "Disponible", null);
+        bookRepository.save(book);
 
+        bookServiceUnderTest.getBooksByStatus("Disponible");
+
+        //THEN
+        verify(bookRepository).findByStatus("Disponible", Sort.by("title").ascending());
+    }
+
+    @Test
+    @DisplayName("It should get reserved books")
+    public void getBookByReservedStatusTest(){
+        //WHEN
+        Book book = new Book(1L, "Book Title", "Book Author", 2000, "Reservado", null);
+        bookRepository.save(book);
+
+        bookServiceUnderTest.getBooksByStatus("Reservado");
+
+        //THEN
+        verify(bookRepository).findByStatus("Reservado", Sort.by("title").ascending());
+    }
+
+    @Test
+    @DisplayName("It should delete a book by its ID")
+    public void deleteBookByIdTest() throws BookNotFoundException {
+        Book book = new Book(1L, "Book Title", "Book Author", 2000, "Disponible", null);
+        bookRepository.save(book);
+
+        given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
+        bookServiceUnderTest.deleteBookById(book.getId());
+        verify(bookRepository).findById(idArgumentCaptor.capture());
+
+        assertThat(idArgumentCaptor.getValue()).isEqualTo(book.getId());
+    }
+
+    @Test
+    @DisplayName("It can't delete the book id since it doesn't exist")
+    public void cantDeleteBookByIdTest() {
+        long id = 1;
+
+        assertThatThrownBy(() -> bookServiceUnderTest.deleteBookById(id))
+                .isInstanceOf(BookNotFoundException.class)
+                .hasMessageContaining("No se encontró el ID: " + id);
+
+        verify(bookRepository).findById(id);
+    }
 }

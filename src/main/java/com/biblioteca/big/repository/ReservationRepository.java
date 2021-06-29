@@ -7,7 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-
-    @Query("SELECT r FROM Reservation r WHERE r.bookId = ?1")
-    Reservation findByBookId(Long bookId);
 }

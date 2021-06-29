@@ -8,22 +8,21 @@ import com.biblioteca.big.model.Reservation;
 import com.biblioteca.big.service.ReservationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/reservations")
 @RestController
 public class ReservationController {
-
     @Autowired
     private ReservationService reservationService;
 
     //POST RESERVATION
     @PostMapping
-    public ResponseEntity<Reservation> newReservation(@RequestBody Reservation reservation)
-            throws UserAlreadyExistsException, ReservationAlreadyExistsException, BookNotFoundException {
-
+    public ResponseEntity<Reservation> insertReservation(@RequestBody Reservation reservation) throws BookNotFoundException {
         reservationService.insertReservation(reservation);
+
         return ResponseEntity.status(201).build();
     }
 

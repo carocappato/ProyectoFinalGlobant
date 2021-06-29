@@ -1,8 +1,10 @@
 package com.biblioteca.big.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -12,29 +14,28 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     @JsonFormat(pattern="dd-MM-yyyy")
     private Date startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     @JsonFormat(pattern="dd-MM-yyyy")
     private Date endDate;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User userId;
+    private User user;
 
-    @OneToOne(targetEntity = Book.class)
+    @OneToOne
     @JoinColumn(name = "book_id", referencedColumnName = "id")
-    private Long bookId;
+    @JsonProperty(value = "book")
+    private Book book;
 
     public Reservation(){ }
 
-    public Reservation(Date startDate, Date endDate, User userId, Long bookId){
+    public Reservation(Long id, Date startDate, Date endDate) {
+        this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.userId = userId;
-        this.bookId = bookId;
     }
 
     public Long getId() {
@@ -62,14 +63,14 @@ public class Reservation {
     }
 
     public User getUser() {
-        return userId;
+        return user;
     }
 
-    public void setUser(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getBookId(){ return bookId; }
+    public Book getBook(){ return book; }
 
-    public void setUserId(Long bookId){ this.bookId = bookId; }
+    public void setBook(Book book){ this.book = book; }
 }
