@@ -4,19 +4,23 @@ import com.biblioteca.big.exception.BookAlreadyExistsException;
 import com.biblioteca.big.exception.BookNotFoundException;
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.repository.BookRepository;
+
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.springframework.data.domain.Sort;
 
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.floatThat;
 import static org.mockito.BDDMockito.given;
@@ -25,6 +29,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
+
     @Mock
     private BookRepository bookRepository;
 
@@ -87,12 +92,11 @@ class BookServiceTest {
 
         given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
         bookServiceUnderTest.updateBook(book, book.getId());
-
-        //TODO terminar
+        //verify ??
     }
 
     @Test
-    @DisplayName("It should update a book by it's given ID")
+    @DisplayName("It should not update a book because it does not exist")
     public void cantUpdateBookTest() throws BookNotFoundException{
         long id = 2;
         Book book = new Book(1L, "Book Title", "Book Author", 2000, "Disponible", null);

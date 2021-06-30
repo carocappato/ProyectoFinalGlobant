@@ -25,9 +25,10 @@ public class BookController {
 
     //PUT BOOK BY ID
     @PutMapping("/{id}")
-    public void updateBook (@RequestBody Book book,
+    public ResponseEntity<Book> updateBook (@RequestBody Book book,
                             @PathVariable("id") Long id) throws BookNotFoundException {
         bookService.updateBook(book, id);
+        return ResponseEntity.status(201).build();
     }
 
     //GET ALL BOOKS

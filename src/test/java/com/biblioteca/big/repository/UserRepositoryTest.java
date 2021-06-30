@@ -10,6 +10,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 class UserRepositoryTest {
+
     @Autowired
     private UserRepository userRepositoryUnderTest;
 
@@ -17,17 +18,18 @@ class UserRepositoryTest {
     @DisplayName("It should check if a user is already in database by comparing the document number with the ones in database")
     void findByDocumentNumberTest() {
         //GIVEN
-        User firstUser = new User(
-                "Eugenia",
-                "Fernandez",
-                38000111L,
-                "eugenia@gmail.com");
+        User firstUser = new User();
+        firstUser.setFirstName("Eugenia");
+        firstUser.setLastName("Fernandez");
+        firstUser.setDocumentNumber(38000111L);
+        firstUser.setEmail("eugenia@gmail.com");
 
-        User secondUser = new User(
-                "Martina",
-                "Gomez",
-                40999888L,
-                "martina@gmail.com");
+        User secondUser = new User();
+        secondUser.setFirstName("Martina");
+        secondUser.setLastName("Gomez");
+        secondUser.setDocumentNumber(40999888L);
+        secondUser.setEmail("martina@gmail.com");
+
         userRepositoryUnderTest.save(firstUser);
         userRepositoryUnderTest.save(secondUser);
 

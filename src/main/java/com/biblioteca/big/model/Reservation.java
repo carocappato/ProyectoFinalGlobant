@@ -27,7 +27,7 @@ public class Reservation {
 
     @OneToOne
     @JoinColumn(name = "book_id", referencedColumnName = "id")
-    @JsonProperty(value = "book")
+    @JsonProperty( value = "book", access = JsonProperty.Access.WRITE_ONLY)
     private Book book;
 
     public Reservation(){ }
