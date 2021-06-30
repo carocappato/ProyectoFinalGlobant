@@ -44,8 +44,6 @@ public class BookService {
 
         book.setId(id);
         bookRepository.save(book);
-
-        ResponseEntity.noContent().build();
     }
 
     //GET BOOK BY STATUS

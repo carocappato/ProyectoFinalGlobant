@@ -1,20 +1,18 @@
 package com.biblioteca.big.controller;
 
-import com.biblioteca.big.exception.BookAlreadyExistsException;
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.repository.BookRepository;
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Sort;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -23,29 +21,36 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.BDDMockito.given;
-import static org.springframework.http.ResponseEntity.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
- import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
+import static org.mockito.BDDMockito.given;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class BookControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private BookRepository bookRepository;
+    /*
+    @InjectMocks
+    private BookController bookController;
 
 
     @Test
+    @Disabled
     @DisplayName("It should update the given book by its ID and return the expected HTTP response")
-    public void updateBook() {
-
-
+    public void updateBook() throws BookNotFoundException {
+        long id = 1L;
+        Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible", null);
+        when(bookRepository.findById(id)).thenReturn(Optional.of(bookOne));
+        assertEquals(bookController.updateBook(bookOne,1L).getStatusCode(), HttpStatus.CREATED);
     }
+    */
 
     @Test
     @DisplayName("It checks if the method returns the list of books and the expected HTTP responsee")

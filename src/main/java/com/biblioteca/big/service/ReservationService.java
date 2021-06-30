@@ -9,7 +9,6 @@ import com.biblioteca.big.repository.BookRepository;
 import com.biblioteca.big.repository.ReservationRepository;
 import com.biblioteca.big.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +17,7 @@ import java.util.Optional;
 
 @Service
 public class ReservationService {
+
     @Autowired
     private ReservationRepository reservationRepository;
 
@@ -37,33 +37,33 @@ public class ReservationService {
 
         reservation.setBook(book);
         book.setBookStatus("Reservado");
-        //book.setReservation(reservation); //TODO: ver si se puede setear el id de la reserva en la tabla de libros
         reservation.setUser(user);
 
         reservationRepository.save(reservation);
     }
 
-    //PUT RESERVATION X BOOKID
+    //PUT RESERVATION X ID
     public void updateExistsReservationByBookId (@RequestBody Reservation reservation,
-                                                 @PathVariable Long bookId) throws ReservationNotFoundException {
-        /*
-        Reservation existsReservation = reservationRepository.findByBookId(bookId);
+                                                 @PathVariable Long id) throws ReservationNotFoundException {
 
-        if (existsReservation == null){
+        Optional<Reservation> existsReservation = reservationRepository.findById(id);
+
+        if (existsReservation.isEmpty()){
             throw new ReservationNotFoundException("La reserva no existe");
         }
-        reservationRepository.save(reservation);*/
+
+        reservation.setId(id);
+        reservationRepository.save(reservation);
     }
 
-    //GET RESERVATION X BOOKID
-    public void getExistsReservationByBookId(@PathVariable Long bookId) throws ReservationNotFoundException {
-        /*
+    //GET RESERVATION X ID
+    public Reservation getExistsReservationByBookId(@PathVariable Long id)
+            throws ReservationNotFoundException {
 
-        Reservation existsReservation = reservationRepository.findByBookId(bookId);
-        if (existsReservation == null){
+        Optional<Reservation> existsReservation = reservationRepository.findById(id);
+        if (existsReservation.isEmpty()){
             throw new ReservationNotFoundException("La reserva no existe");
         }
-        return existsReservation;
-        */
+        return existsReservation.get();
     }
 }
