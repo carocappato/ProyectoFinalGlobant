@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
 @Entity
 @Table(name = "books")
 public class Book {
@@ -25,20 +24,30 @@ public class Book {
     private String bookStatus;
 
     @OneToOne(mappedBy = "book")
-    private Reservation reservationId;
+    private Reservation reservation;
 
     public Book() { }
 
     public Book(String title,
                 String author,
                 int publishYear,
-                String bookStatus,
-                Reservation reservationId) {
+                String bookStatus) {
         this.title = title;
         this.author = author;
         this.publishYear = publishYear;
         this.bookStatus = bookStatus;
-        this.reservationId = reservationId;
+    }
+
+    public Book(Long id,
+                String title,
+                String author,
+                int publishYear,
+                String bookStatus) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.publishYear = publishYear;
+        this.bookStatus = bookStatus;
     }
 
     public Long getId() {
@@ -79,13 +88,5 @@ public class Book {
 
     public void setBookStatus(String bookStatus) {
         this.bookStatus = bookStatus.toUpperCase();
-    }
-
-    public Reservation getReservation() {
-        return reservationId;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservationId = reservation;
     }
 }

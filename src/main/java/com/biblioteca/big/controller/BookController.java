@@ -5,6 +5,7 @@ import com.biblioteca.big.exception.BookNotFoundException;
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -12,45 +13,45 @@ import java.util.List;
 @RequestMapping("/books")
 @RestController
 public class BookController {
-    @Autowired
-    private BookService bookService;
+    @Autowired private BookService bookService;
 
     //POST BOOK
-    @PostMapping
-    public ResponseEntity<Book> insertBook(@RequestBody Book book) throws BookAlreadyExistsException {
-        bookService.insertBook(book);
+    @PostMapping("/create")
+    public void createBook(@RequestBody Book book) throws BookAlreadyExistsException {
+        bookService.createBook(book);
 
-        return ResponseEntity.status(201).build();
+        ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     //PUT BOOK BY ID
-    @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook (@RequestBody Book book,
+    @PutMapping("/update/{id}")
+    public void updateBook (@RequestBody Book book,
                             @PathVariable("id") Long id) throws BookNotFoundException {
         bookService.updateBook(book, id);
-        return ResponseEntity.status(201).build();
+
+        ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     //GET ALL BOOKS
-    @GetMapping
+    @GetMapping("/getAll")
     public List<Book> getAllBooks(){
         return bookService.getAllBooks();
     }
 
     //GET BOOK BY ID
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public Book getBookById(@PathVariable("id") Long id) throws BookNotFoundException {
         return bookService.getBookById(id);
     }
 
     //GET BOOK BY STATUS
-    @GetMapping("/status/{status}")
+    @GetMapping("/getByStatus/{status}")
     public List<Book> getBooksByStatus(@PathVariable("status") String status) {
         return bookService.getBooksByStatus(status);
     }
 
     //DELETE BOOK BY ID
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteBookById(@PathVariable("id") Long id) throws BookNotFoundException {
         bookService.deleteBookById(id);
     }

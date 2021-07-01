@@ -20,14 +20,13 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class BookService {
-    @Autowired
-    private BookRepository bookRepository;
+    @Autowired private BookRepository bookRepository;
 
     //POST BOOK
-    public void insertBook (@RequestBody Book book) throws BookAlreadyExistsException {
-        Book existsBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
+    public void createBook(@RequestBody Book book) throws BookAlreadyExistsException {
+        Book existingBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
 
-        if (existsBook != null){
+        if (existingBook != null){
             throw new BookAlreadyExistsException("El libro ya existe");
         }
 
@@ -63,13 +62,13 @@ public class BookService {
 
     //GET BOOK BY ID
     public Book getBookById(@PathVariable("id") Long id) throws BookNotFoundException {
-        Optional<Book> book = bookRepository.findById(id);
+        Optional<Book> bookOptional = bookRepository.findById(id);
 
-        if(book.isEmpty()) {
+        if(bookOptional.isEmpty()) {
             throw new BookNotFoundException("No se encontró el ID: " + id);
         }
 
-        return book.get();
+        return bookOptional.get();
     }
 
     //GET ALL BOOKS
@@ -79,9 +78,9 @@ public class BookService {
 
     //DELETE BOOK BY ID
     public void deleteBookById(@PathVariable("id") Long id) throws BookNotFoundException {
-        Optional<Book> book = bookRepository.findById(id);
+        Optional<Book> bookOptional = bookRepository.findById(id);
 
-        if(book.isEmpty()){
+        if(bookOptional.isEmpty()){
             throw new BookNotFoundException("No se encontró el ID: " + id);
         }
 

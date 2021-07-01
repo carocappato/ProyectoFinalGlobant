@@ -17,15 +17,9 @@ import java.util.Optional;
 
 @Service
 public class ReservationService {
-
-    @Autowired
-    private ReservationRepository reservationRepository;
-
-    @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private ReservationRepository reservationRepository;
+    @Autowired private BookRepository bookRepository;
+    @Autowired private UserRepository userRepository;
 
     //POST RESERVATION
     public void insertReservation(Reservation reservation) throws BookNotFoundException {
@@ -43,12 +37,12 @@ public class ReservationService {
     }
 
     //PUT RESERVATION X ID
-    public void updateExistsReservationByBookId (@RequestBody Reservation reservation,
-                                                 @PathVariable Long id) throws ReservationNotFoundException {
+    public void updateExistingReservationByBookId(@RequestBody Reservation reservation,
+                                                  @PathVariable Long id) throws ReservationNotFoundException {
 
-        Optional<Reservation> existsReservation = reservationRepository.findById(id);
+        Optional<Reservation> existingReservation = reservationRepository.findById(id);
 
-        if (existsReservation.isEmpty()){
+        if (existingReservation.isEmpty()){
             throw new ReservationNotFoundException("La reserva no existe");
         }
 
@@ -60,10 +54,10 @@ public class ReservationService {
     public Reservation getExistsReservationByBookId(@PathVariable Long id)
             throws ReservationNotFoundException {
 
-        Optional<Reservation> existsReservation = reservationRepository.findById(id);
-        if (existsReservation.isEmpty()){
+        Optional<Reservation> existingReservation = reservationRepository.findById(id);
+        if (existingReservation.isEmpty()){
             throw new ReservationNotFoundException("La reserva no existe");
         }
-        return existsReservation.get();
+        return existingReservation.get();
     }
 }

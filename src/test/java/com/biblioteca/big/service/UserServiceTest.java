@@ -42,13 +42,9 @@ class UserServiceTest {
     @Test
     @DisplayName("It should insert the given user in database")
     public void insertUserTest() throws IllegalEmailFormatException, UserAlreadyExistsException {
-        //GIVEN
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
-
-        //WHEN
         userServiceUnderTest.insertUser(user);
 
-        //THEN
         userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
         User capturedUser = userArgumentCaptor.getValue();
@@ -59,11 +55,8 @@ class UserServiceTest {
     @Test
     @DisplayName("It should throw an exception if the email format is not valid")
     public void illegalEmailFormatExceptionTest() {
-        //GIVEN
         User user = new User("John", "Doe", 33444555L,"johndoe");
 
-        //WHEN
-        //THEN
         Assertions.assertThrows(IllegalEmailFormatException.class, () -> {
             userServiceUnderTest.insertUser(user);
         });
@@ -76,13 +69,10 @@ class UserServiceTest {
     @Test
     @DisplayName("It should throw an exception if the user already exists")
     public void userAlreadyExistsExceptionTest() {
-        //GIVEN
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
 
         given(userRepository.findByDocumentNumber(user.getDocumentNumber())).willReturn(user);
 
-        //WHEN
-        //THEN
         assertThatThrownBy(() -> userServiceUnderTest.insertUser(user))
                 .isInstanceOf(UserAlreadyExistsException.class)
                 .hasMessageContaining("El usuario ya existe");

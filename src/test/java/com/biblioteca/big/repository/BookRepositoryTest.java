@@ -39,14 +39,12 @@ class BookRepositoryTest {
                 "Frutillas",
                 "Juana Gomez",
                 2020,
-                "DISPONIBLE",
-                null);
+                "DISPONIBLE");
         Book secondBook = new Book(
                 "Naranjas",
                 "Juana Gomez",
                 2020,
-                "RESERVADO",
-                null);
+                "RESERVADO");
 
         bookRepositoryUnderTest.save(book);
         bookRepositoryUnderTest.save(secondBook);
@@ -69,14 +67,12 @@ class BookRepositoryTest {
                 "Frutillas",
                 "Juana Gomez",
                 2020,
-                "DISPONIBLE",
-                null);
+                "DISPONIBLE");
         Book secondBook = new Book(
                 "Naranjas",
                 "Juana Gomez",
                 2020,
-                "RESERVADO",
-                null);
+                "RESERVADO");
 
         bookRepositoryUnderTest.save(book);
         bookRepositoryUnderTest.save(secondBook);
@@ -99,14 +95,12 @@ class BookRepositoryTest {
                 "Frutillas",
                 "Juana Gomez",
                 2020,
-                "DISPONIBLE",
-                null);
+                "DISPONIBLE");
         Book secondBook = new Book(
                 "Naranjas",
                 "Juana Gomez",
                 2020,
-                "RESERVADO",
-                null);
+                "RESERVADO");
 
         bookRepositoryUnderTest.save(book);
         bookRepositoryUnderTest.save(secondBook);
