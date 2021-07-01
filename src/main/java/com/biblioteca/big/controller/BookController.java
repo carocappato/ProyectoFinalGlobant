@@ -17,19 +17,19 @@ public class BookController {
 
     //POST BOOK
     @PostMapping("/create")
-    public void createBook(@RequestBody Book book) throws BookAlreadyExistsException {
+    public ResponseEntity<Void> createBook(@RequestBody Book book) throws BookAlreadyExistsException {
         bookService.createBook(book);
 
-        ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     //PUT BOOK BY ID
     @PutMapping("/update/{id}")
-    public void updateBook (@RequestBody Book book,
-                            @PathVariable("id") Long id) throws BookNotFoundException {
+    public ResponseEntity<Void> updateBook(@RequestBody Book book,
+                                           @PathVariable("id") Long id) throws BookNotFoundException {
         bookService.updateBook(book, id);
 
-        ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     //GET ALL BOOKS

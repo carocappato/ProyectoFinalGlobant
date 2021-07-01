@@ -1,101 +1,130 @@
 package com.biblioteca.big.controller;
 
+import com.biblioteca.big.exception.BookAlreadyExistsException;
+import com.biblioteca.big.exception.BookNotFoundException;
 import com.biblioteca.big.model.Book;
-
+import com.biblioteca.big.service.BookService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-
-import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.List;
 
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
-
-@SpringBootTest
-@AutoConfigureMockMvc
-class BookControllerTest {
-    @Autowired private MockMvc mockMvc;
-    @MockBean private BookController bookController;
+@ExtendWith(MockitoExtension.class)
+public class BookControllerTest {
+    @InjectMocks private BookController bookController; //Clase que quiero testear
+    @Mock private BookService bookService; //Dependencia que quiero mockear
+    @Captor private ArgumentCaptor<Book> bookArgumentCaptor;
+    @Captor private ArgumentCaptor<Long> longArgumentCaptor;
 
     @Test
-    @DisplayName( "It inserts a book in database")
-    public void createBookTest() throws Exception {
-        /*
+    @DisplayName("It should create a book")
+    public void createBookTest() throws BookAlreadyExistsException {
         Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible");
 
-        bookController.createBook(bookOne);
+        doNothing().when(bookService).createBook(any());
+        ResponseEntity<Void> responseEntity = bookController.createBook(bookOne);
 
-        ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
-        verify(bookController).createBook(bookArgumentCaptor.capture());
-        Book capturedBook = bookArgumentCaptor.getValue();
+        verify(bookService).createBook(bookArgumentCaptor.capture());
 
-        assertThat(capturedBook).isEqualTo(bookOne);
-
-        mockMvc.perform(post("/books/create"))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
-        */
+        assertEquals(bookOne, bookArgumentCaptor.getValue());
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
     }
 
     @Test
-    @DisplayName("It checks if the method returns the list of books and the expected HTTP responsee")
-    public void getAllBooksTest() throws Exception {
+    @DisplayName("It should update a book")
+    public void updateBookTest() throws BookNotFoundException {
+        long id = 1;
+        Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible");
+
+        doNothing().when(bookService).updateBook(any(), anyLong());
+        ResponseEntity<Void> responseEntity = bookController.updateBook(bookOne, id);
+
+        verify(bookService).updateBook(bookArgumentCaptor.capture(), longArgumentCaptor.capture());
+        assertEquals(bookOne, bookArgumentCaptor.getValue());
+        assertEquals(id, longArgumentCaptor.getValue());
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("It should return the list of all the books")
+    public void getAllBooksTest() {
         Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible");
         Book bookTwo = new Book(2L,"Second Book", "Second Author", 2000, "Disponible");
 
         List<Book> listAllBooks = Arrays.asList(bookOne, bookTwo);
-        given(bookController.getAllBooks()).willReturn(listAllBooks);
+        given(bookService.getAllBooks()).willReturn(listAllBooks);
 
-        mockMvc.perform(get("/books/getAll"));
+        List<Book> actualList = bookController.getAllBooks();
+        verify(bookService).getAllBooks();
+
+        assertNotNull(actualList);
+        assertEquals(2, actualList.size());
     }
 
     @Test
-    @DisplayName("It checks if the given ID returns the book and the expected HTTP response")
-    public void getBookByIdTest() throws Exception {
+    @DisplayName("It should return a book by its id")
+    public void getBookByIdTest() throws BookNotFoundException {
         Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible");
 
-        given(bookController.getBookById(bookOne.getId())).willReturn(bookOne);
+        given(bookService.getBookById(bookOne.getId())).willReturn(bookOne);
+        Book capturedBook = bookController.getBookById(bookOne.getId());
 
-        mockMvc.perform(get("/books/getById/" + bookOne.getId().toString()))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        verify(bookService).getBookById(longArgumentCaptor.capture());
+        assertEquals(bookOne.getId(), longArgumentCaptor.getValue());
+
+        assertNotNull(capturedBook);
+        assertEquals(capturedBook, bookOne);
     }
 
     @Test
-    @DisplayName("It checks if the given status returns the list of books and the expected HTTP response")
-    public void getBooksByStatusTest() throws Exception {
+    @DisplayName("It should return the list of available books")
+    public void getBooksByStatusTest() {
         Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible");
-        Book bookTwo = new Book(1L,"Second Book", "Second Author", 2000, "Disponible");
+        Book bookTwo = new Book(2L,"Second Book", "Second Author", 2000, "Disponible");
 
-        List<Book> bookList = Arrays.asList(bookOne, bookTwo);
+        List<Book> listAvailableBooks = Arrays.asList(bookOne, bookTwo);
+        given(bookService.getBooksByStatus("DISPONIBLE")).willReturn(listAvailableBooks);
 
-        given(bookController.getBooksByStatus("Disponible")).willReturn(bookList);
+        List<Book> actualList = bookController.getBooksByStatus("DISPONIBLE");
+        verify(bookService).getBooksByStatus("DISPONIBLE");
 
-        mockMvc.perform(get("/books/getByStatus/" + bookOne.getBookStatus()));
+        assertNotNull(actualList);
+        assertEquals(2, actualList.size());
     }
 
     @Test
-    @DisplayName("It checks if the given ID delete the book and returns the expected HTTP response")
-    public void deleteBookByIdTest() throws Exception {
+    @DisplayName("It should delete a book")
+    public void deleteBookByIdTest() throws BookNotFoundException {
         Book bookOne = new Book(1L,"First Book", "First Author", 2000, "Disponible");
 
-        given(bookController.getBookById(bookOne.getId())).willReturn(bookOne);
+        doNothing().when(bookService).deleteBookById(anyLong());
+        bookController.deleteBookById(bookOne.getId());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/books/delete/" + bookOne.getId().toString()));
+        verify(bookService).deleteBookById(longArgumentCaptor.capture());
+        assertEquals(bookOne.getId(), longArgumentCaptor.getValue());
+
+        verify(bookService).deleteBookById(bookOne.getId());
     }
 }

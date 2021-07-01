@@ -16,8 +16,8 @@ public class UserService {
     private UserRepository userRepository;
 
     //POST USER
-    public void insertUser (@RequestBody User user) throws UserAlreadyExistsException,
-            IllegalEmailFormatException {
+    public void insertUser (@RequestBody User user)
+            throws UserAlreadyExistsException, IllegalEmailFormatException {
         User olderUser = userRepository.findByDocumentNumber(user.getDocumentNumber());
 
         if (olderUser != null) {
