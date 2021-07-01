@@ -8,6 +8,7 @@ import com.biblioteca.big.model.User;
 import com.biblioteca.big.repository.BookRepository;
 import com.biblioteca.big.repository.ReservationRepository;
 import com.biblioteca.big.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,8 @@ public class ReservationService {
     @Autowired private UserRepository userRepository;
 
     //POST RESERVATION
-    public void insertReservation(Reservation reservation) throws BookNotFoundException {
+    public void insertReservation(Reservation reservation) throws BookNotFoundException{
+
         Optional<Book> bookOptional = bookRepository.findById(reservation.getBook().getId());
         Optional<User> userOptional = userRepository.findById(reservation.getUser().getId());
 
@@ -37,7 +39,7 @@ public class ReservationService {
     }
 
     //PUT RESERVATION X ID
-    public void updateExistingReservationByBookId(@RequestBody Reservation reservation,
+    public void updateExistingReservationById(@RequestBody Reservation reservation,
                                                   @PathVariable Long id) throws ReservationNotFoundException {
 
         Optional<Reservation> existingReservation = reservationRepository.findById(id);
@@ -51,7 +53,7 @@ public class ReservationService {
     }
 
     //GET RESERVATION X ID
-    public Reservation getExistsReservationByBookId(@PathVariable Long id)
+    public Reservation getExistsReservationById(@PathVariable Long id)
             throws ReservationNotFoundException {
 
         Optional<Reservation> existingReservation = reservationRepository.findById(id);

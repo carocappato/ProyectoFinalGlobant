@@ -27,6 +27,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
+
     @Mock private BookRepository bookRepository;
     @InjectMocks private BookService bookServiceUnderTest;
     @Captor private ArgumentCaptor<Book> bookArgumentCaptor;

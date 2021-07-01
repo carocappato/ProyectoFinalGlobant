@@ -13,23 +13,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reservations")
 @RestController
 public class ReservationController {
+
     @Autowired private ReservationService reservationService;
 
     //POST RESERVATION
     @PostMapping("/create")
-    public void createReservation(@RequestBody Reservation reservation) throws BookNotFoundException {
+    public ResponseEntity<Void> createReservation(@RequestBody Reservation reservation) throws BookNotFoundException {
         reservationService.insertReservation(reservation);
-
-        ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     //PUT RESERVATION BY ID
     @PutMapping("/update/{id}")
-    public void updateReservation (@RequestBody Reservation reservation,
+    public ResponseEntity<Void> updateReservation (@RequestBody Reservation reservation,
                                    @PathVariable("id") Long bookId) throws ReservationNotFoundException {
-        reservationService.updateExistingReservationByBookId(reservation, bookId);
+        reservationService.updateExistingReservationById(reservation, bookId);
 
-        ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 
     //GET RESERVATION BY ID
@@ -37,7 +37,7 @@ public class ReservationController {
     public Reservation getReservationById (@PathVariable("id") Long bookId)
             throws ReservationNotFoundException {
 
-        return reservationService.getExistsReservationByBookId(bookId);
+        return reservationService.getExistsReservationById(bookId);
     }
 
 }

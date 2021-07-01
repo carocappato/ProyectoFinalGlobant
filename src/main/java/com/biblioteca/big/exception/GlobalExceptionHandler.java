@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<?> bookNotFoundException(BookNotFoundException ex,
                                                    WebRequest request) {
@@ -28,14 +29,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BookAlreadyExistsException.class)
     public ResponseEntity<?> bookAlreadyExistsException(BookAlreadyExistsException ex,
                                                         WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(),request.getDescription(false));
-
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ReservationAlreadyExistsException.class)
-    public ResponseEntity<?> reservationAlreadyExistsException(ReservationNotFoundException ex,
-                                                               WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(),request.getDescription(false));
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
