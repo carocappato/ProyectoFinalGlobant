@@ -1,88 +1,78 @@
 package com.biblioteca.big.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @Column(name = "author", nullable = false)
+    @Column(name = "author", length = 100, nullable = false)
     private String author;
 
-    @Column(name = "editorialDate", nullable = false)
-    private Date editorialDate;
-    @Column(name = "bookStatus", nullable = false)
-    private String status;
+    @Column(name = "publish_year", nullable = false)
+    private int publishYear;
 
-    @Column(name = "reservationId")
-    private int reservation;
+    @Column(name = "book_status", length = 50, nullable = false)
+    private String bookStatus;
+
+    @OneToOne(mappedBy = "book")
+    private Reservation reservation;
 
     public Book() { }
 
-    public Book(Long id, String title, String author, Date editorialDate, String status, int reservation) {
+    public Book(String title,
+                String author,
+                int publishYear,
+                String bookStatus) {
+        this.title = title;
+        this.author = author;
+        this.publishYear = publishYear;
+        this.bookStatus = bookStatus;
+    }
+
+    public Book(Long id,
+                String title,
+                String author,
+                int publishYear,
+                String bookStatus) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.editorialDate = editorialDate;
-        this.status = status;
-        this.reservation = reservation;
+        this.publishYear = publishYear;
+        this.bookStatus = bookStatus;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() { return title.toUpperCase(); }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setTitle(String title) { this.title = title.toUpperCase(); }
 
-    public String getAuthor() {
-        return author;
-    }
+    public String getAuthor() { return author.toUpperCase(); }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+    public void setAuthor(String author) { this.author = author.toUpperCase(); }
 
-    public Date getEditorialDate() {
-        return editorialDate;
-    }
+    public int getPublishYear() { return publishYear; }
 
-    public void setEditorialDate(Date editorialDate) {
-        this.editorialDate = editorialDate;
-    }
+    public void setPublishYear(int publishYear) { this.publishYear = publishYear; }
 
-    public String getStatus() {
-        return status;
-    }
+    public String getBookStatus() { return bookStatus.toUpperCase(); }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public void setBookStatus(String bookStatus) { this.bookStatus = bookStatus.toUpperCase(); }
 
-    public int getReservation() {
+    public Reservation getReservation() {
         return reservation;
     }
 
-    public void setReservation(int reservation) {
+    public void setReservation(Reservation reservation) {
         this.reservation = reservation;
     }
 }

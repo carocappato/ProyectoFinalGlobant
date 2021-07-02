@@ -1,5 +1,8 @@
 package com.biblioteca.big.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,25 +11,30 @@ import java.util.Date;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "startDate", nullable = false)
+    @Column(name = "start_date", nullable = false)
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date startDate;
 
-    @Column(name = "endDate", nullable = false)
+    @Column(name = "end_date", nullable = false)
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date endDate;
 
-    @Column(name = "userId")
-    private int user;
+    @OneToOne
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
+    @JsonProperty( value = "book", access = JsonProperty.Access.WRITE_ONLY)
+    private Book book;
 
     public Reservation(){ }
 
-    public Reservation(Long id, Date startDate, Date endDate, int user) {
+    public Reservation(Long id, Date startDate, Date endDate) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.user = user;
     }
 
     public Long getId() {
@@ -53,11 +61,15 @@ public class Reservation {
         this.endDate = endDate;
     }
 
-    public int getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(int user) {
+    public void setUser(User user) {
         this.user = user;
     }
+
+    public Book getBook(){ return book; }
+
+    public void setBook(Book book){ this.book = book; }
 }
