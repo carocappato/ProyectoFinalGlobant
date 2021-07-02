@@ -27,7 +27,7 @@ public class ReservationController {
     public ResponseEntity<Void> updateReservationById(@RequestBody Reservation reservation, @PathVariable("id") Long bookId) throws ReservationNotFoundException {
         reservationService.updateReservationById(reservation, bookId);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     //GET RESERVATION BY ID

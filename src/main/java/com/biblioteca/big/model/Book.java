@@ -48,43 +48,31 @@ public class Book {
         this.bookStatus = bookStatus;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
+
+    public String getTitle() { return title.toUpperCase(); }
+
+    public void setTitle(String title) { this.title = title.toUpperCase(); }
+
+    public String getAuthor() { return author.toUpperCase(); }
+
+    public void setAuthor(String author) { this.author = author.toUpperCase(); }
+
+    public int getPublishYear() { return publishYear; }
+
+    public void setPublishYear(int publishYear) { this.publishYear = publishYear; }
+
+    public String getBookStatus() { return bookStatus.toUpperCase(); }
+
+    public void setBookStatus(String bookStatus) { this.bookStatus = bookStatus.toUpperCase(); }
+
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title.toUpperCase();
-    }
-
-    public void setTitle(String title) {
-        this.title = title.toUpperCase();
-    }
-
-    public String getAuthor() {
-        return author.toUpperCase();
-    }
-
-    public void setAuthor(String author) {
-        this.author = author.toUpperCase();
-    }
-
-    public int getPublishYear() {
-        return publishYear;
-    }
-
-    public void setPublishYear(int publishYear) {
-        this.publishYear = publishYear;
-    }
-
-    public String getBookStatus() {
-        return bookStatus.toUpperCase();
-    }
-
-    public void setBookStatus(String bookStatus) {
-        this.bookStatus = bookStatus.toUpperCase();
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }

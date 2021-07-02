@@ -85,7 +85,7 @@ public class ReservationControllerTest {
         assertEquals(id, longArgumentCaptor.getValue());
 
         assertNotNull(responseEntity);
-        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test

@@ -51,9 +51,11 @@ public class ReservationService {
     //GET RESERVATION X ID
     public Reservation getReservationById(@PathVariable("id") Long id) throws ReservationNotFoundException {
         Optional<Reservation> existingReservation = reservationRepository.findById(id);
+
         if (existingReservation.isEmpty()){
             throw new ReservationNotFoundException("La reserva no existe");
         }
+
         return existingReservation.get();
     }
 }

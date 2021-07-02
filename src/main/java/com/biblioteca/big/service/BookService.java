@@ -49,10 +49,10 @@ public class BookService {
     public List<Book> getBooksByStatus(@PathVariable("status") String status) {
         List<Book> books = new ArrayList<>();
 
-        if(status.equals("Disponible")) {
+        if(status.equals("Disponible") || status.equals("DISPONIBLE") || status.equals("disponible")) {
             books = bookRepository.findByStatus("Disponible", Sort.by("title").ascending());
             return books;
-        } else if (status.equals("Reservado")) {
+        } else if (status.equals("Reservado") || status.equals("RESERVADO") || status.equals("reservado")) {
             books = bookRepository.findByStatus("Reservado", Sort.by("title").ascending());
             return books;
         }
