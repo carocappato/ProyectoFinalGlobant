@@ -11,12 +11,12 @@
 <p>Para realizarlo se utilizaron las siguientes tecnologías: Java 11, Spring Boot, Maven, JPA, Hibernate, JUnit 5, Mockito y MySQL.</p>
 
 ## Configuración
-<p>Para que corra la aplicacion conectada a una base de datos MySQL local, completar los datos con la base que se quiere usar, detallando la URL completa, usuario y contraseña en el archivo application.properties ubicado en main/resources.</p>
+<p>Para que corra la aplicacion conectada a una base de datos MySQL local, completar los datos con la base que se quiere usar, detallando la URL completa, usuario y contraseña (como en el ejemplo ubicado debajo) en el archivo application.properties ubicado en main/resources.</p>
 
 ```
-spring.datasource.url=
-spring.datasource.username=
-spring.datasource.password=
+spring.datasource.url=jdbc:mysql://localhost:3306/library
+spring.datasource.username=root
+spring.datasource.password=root
 ```
 
 ## Métodos
