@@ -1,7 +1,5 @@
 package com.biblioteca.big.model;
 
-import lombok.AllArgsConstructor;
-
 import javax.persistence.*;
 
 @Entity

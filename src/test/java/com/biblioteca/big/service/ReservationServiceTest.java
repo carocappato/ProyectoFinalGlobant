@@ -6,6 +6,7 @@ import com.biblioteca.big.model.Reservation;
 import com.biblioteca.big.model.User;
 import com.biblioteca.big.repository.ReservationRepository;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -29,21 +30,20 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ReservationServiceTest {
-
+public class ReservationServiceTest {
     @Mock private ReservationRepository reservationRepository;
     @InjectMocks private ReservationService reservationServiceUnderTest;
-    @Captor ArgumentCaptor<Reservation> reservationArgumentCaptor;
     @Captor private ArgumentCaptor<Long> idArgumentCaptor;
 
     @Test
-    public void updateExistingReservationByBookIdTest() throws ParseException, ReservationNotFoundException {
+    @DisplayName("It should update a reservation by it's id")
+    public void updateReservationByIdTest() throws ParseException, ReservationNotFoundException {
         Book book = new Book(1L, "Book Name", "Book Author", 2000, "Disponible");
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
 
-        SimpleDateFormat date = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = date.parse("10-10-2021");
-        Date endDate = date.parse("20-10-2020");
+        Date endDate = date.parse("20-10-2021");
 
         Reservation reservation = new Reservation(1L, startDate, endDate);
         reservation.setBook(book);
@@ -58,26 +58,27 @@ class ReservationServiceTest {
 
         when(reservationRepository.findById(1L)).thenReturn(Optional.of(updatedReservation));
 
-        reservationServiceUnderTest.updateExistingReservationById(updatedReservation, reservation.getId());
+        reservationServiceUnderTest.updateReservationById(updatedReservation, reservation.getId());
         verify(reservationRepository).save(updatedReservation);
 
         assertThat(updatedReservation.getStartDate()).isEqualTo(newStartDate);
     }
 
     @Test
-    public void cantUpdateReservationTest() throws ParseException {
-        long id = 2L;
+    @DisplayName("It shouldn't update the reservation since that ID doesn't exist")
+    public void cantUpdateReservationByIdTest() throws ParseException {
+        long id = 2;
         Book book = new Book(1L, "Book Name", "Book Author", 2000, "Disponible");
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
-        SimpleDateFormat date = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = date.parse("10-10-2021");
-        Date endDate = date.parse("20-10-2020");
+        Date endDate = date.parse("20-10-2021");
 
         Reservation reservation = new Reservation(1L, startDate, endDate);
         reservation.setBook(book);
         reservation.setUser(user);
 
-        assertThatThrownBy(() -> reservationServiceUnderTest.updateExistingReservationById(reservation, id))
+        assertThatThrownBy(() -> reservationServiceUnderTest.updateReservationById(reservation, id))
                 .isInstanceOf(ReservationNotFoundException.class)
                 .hasMessageContaining("La reserva no existe");
 
@@ -87,12 +88,13 @@ class ReservationServiceTest {
     }
 
     @Test
-    public void getExistingReservationByIdTest() throws ParseException, ReservationNotFoundException {
+    @DisplayName("It should get a reservation by it's id")
+    public void getReservationByIdTest() throws ParseException, ReservationNotFoundException {
         Book book = new Book(1L, "Book Name", "Book Author", 2000, "Disponible");
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
-        SimpleDateFormat date = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = date.parse("10-10-2021");
-        Date endDate = date.parse("20-10-2020");
+        Date endDate = date.parse("20-10-2021");
 
         Reservation reservation = new Reservation(1L, startDate, endDate);
         reservation.setBook(book);
@@ -100,17 +102,18 @@ class ReservationServiceTest {
         reservationRepository.save(reservation);
 
         given(reservationRepository.findById(reservation.getId())).willReturn(Optional.of(reservation));
-        reservationServiceUnderTest.getExistsReservationById(reservation.getId());
+        reservationServiceUnderTest.getReservationById(reservation.getId());
 
         verify(reservationRepository).findById(idArgumentCaptor.capture());
         assertThat(idArgumentCaptor.getValue()).isEqualTo(reservation.getId());
     }
 
     @Test
+    @DisplayName("It shouldn't get the reservation since that ID doesn't exist")
     public void cantGetReservationByIdTest(){
-        long id = 1L;
+        long id = 1;
 
-        assertThatThrownBy(() -> reservationServiceUnderTest.getExistsReservationById(id))
+        assertThatThrownBy(() -> reservationServiceUnderTest.getReservationById(id))
                 .isInstanceOf(ReservationNotFoundException.class)
                 .hasMessageContaining("La reserva no existe");
 

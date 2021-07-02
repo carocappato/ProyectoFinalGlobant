@@ -25,19 +25,11 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
-
-    @Mock
-    private UserRepository userRepository;
-
-    @InjectMocks
-    private UserService userServiceUnderTest;
-
-    @Captor
-    private ArgumentCaptor<Long> idDocumentCaptor;
-
-    @Captor
-    private ArgumentCaptor<User> userArgumentCaptor;
+public class UserServiceTest {
+    @Mock private UserRepository userRepository;
+    @InjectMocks private UserService userServiceUnderTest;
+    @Captor private ArgumentCaptor<Long> idDocumentCaptor;
+    @Captor private ArgumentCaptor<User> userArgumentCaptor;
 
     @Test
     @DisplayName("It should insert the given user in database")
@@ -79,5 +71,4 @@ class UserServiceTest {
 
         verify(userRepository, never()).save(any());
     }
-
 }

@@ -1,12 +1,12 @@
 package com.biblioteca.big.controller;
 
-import com.biblioteca.big.exception.BookNotFoundException;
 import com.biblioteca.big.exception.ReservationNotFoundException;
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.model.Reservation;
 import com.biblioteca.big.model.User;
 import com.biblioteca.big.service.ReservationService;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -34,29 +34,29 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class ReservationControllerTest {
-
+public class ReservationControllerTest {
     @InjectMocks private ReservationController reservationController;
     @Mock ReservationService reservationService;
     @Captor private ArgumentCaptor<Reservation> reservationArgumentCaptor;
     @Captor private ArgumentCaptor<Long> longArgumentCaptor;
 
     @Test
-    void createReservationTest() throws ParseException, BookNotFoundException {
+    @DisplayName("It should create a reservation")
+    public void createReservationTest() throws ParseException {
         Book book = new Book(1L, "Book Name", "Book Author", 2000, "Disponible");
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
-        SimpleDateFormat date = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = date.parse("10-10-2021");
-        Date endDate = date.parse("20-10-2020");
+        Date endDate = date.parse("20-10-2021");
 
         Reservation reservation = new Reservation(1L, startDate, endDate);
         reservation.setBook(book);
         reservation.setUser(user);
 
-        doNothing().when(reservationService).insertReservation(any());
+        doNothing().when(reservationService).createReservation(any());
         ResponseEntity<Void> responseEntity = reservationController.createReservation(reservation);
 
-        verify(reservationService).insertReservation(reservationArgumentCaptor.capture());
+        verify(reservationService).createReservation(reservationArgumentCaptor.capture());
 
         assertEquals(reservation, reservationArgumentCaptor.getValue());
         assertNotNull(responseEntity);
@@ -64,22 +64,23 @@ class ReservationControllerTest {
     }
 
     @Test
-    void updateReservationTest() throws ParseException, ReservationNotFoundException {
+    @DisplayName("It should update a reservation by its ID")
+    public void updateReservationByIdTest() throws ParseException, ReservationNotFoundException {
         long id = 1L;
         Book book = new Book(1L, "Book Name", "Book Author", 2000, "Disponible");
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
-        SimpleDateFormat date = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = date.parse("10-10-2021");
-        Date endDate = date.parse("20-10-2020");
+        Date endDate = date.parse("20-10-2021");
 
         Reservation reservation = new Reservation(1L, startDate, endDate);
         reservation.setBook(book);
         reservation.setUser(user);
 
-        doNothing().when(reservationService).updateExistingReservationById(any(), anyLong());
-        ResponseEntity<Void> responseEntity = reservationController.updateReservation(reservation, id);
+        doNothing().when(reservationService).updateReservationById(any(), anyLong());
+        ResponseEntity<Void> responseEntity = reservationController.updateReservationById(reservation, id);
 
-        verify(reservationService).updateExistingReservationById(reservationArgumentCaptor.capture(), longArgumentCaptor.capture());
+        verify(reservationService).updateReservationById(reservationArgumentCaptor.capture(), longArgumentCaptor.capture());
         assertEquals(reservation, reservationArgumentCaptor.getValue());
         assertEquals(id, longArgumentCaptor.getValue());
 
@@ -88,22 +89,22 @@ class ReservationControllerTest {
     }
 
     @Test
-    void getReservationByIdTest() throws ParseException, ReservationNotFoundException {
-
+    @DisplayName("It should get a reservation by its ID")
+    public void getReservationByIdTest() throws ParseException, ReservationNotFoundException {
         Book book = new Book(1L, "Book Name", "Book Author", 2000, "Disponible");
         User user = new User("John", "Doe", 33444555L,"johndoe@gmail.com");
-        SimpleDateFormat date = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = date.parse("10-10-2021");
-        Date endDate = date.parse("20-10-2020");
+        Date endDate = date.parse("20-10-2021");
 
         Reservation reservation = new Reservation(1L, startDate, endDate);
         reservation.setBook(book);
         reservation.setUser(user);
 
-        given(reservationService.getExistsReservationById(reservation.getId())).willReturn(reservation);
+        given(reservationService.getReservationById(reservation.getId())).willReturn(reservation);
         Reservation capturedReservation = reservationController.getReservationById(reservation.getId());
 
-        verify(reservationService).getExistsReservationById(longArgumentCaptor.capture());
+        verify(reservationService).getReservationById(longArgumentCaptor.capture());
         assertEquals(reservation.getId(), longArgumentCaptor.getValue());
 
         assertNotNull(capturedReservation);

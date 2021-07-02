@@ -1,6 +1,5 @@
 package com.biblioteca.big.service;
 
-import com.biblioteca.big.exception.BookNotFoundException;
 import com.biblioteca.big.exception.ReservationNotFoundException;
 import com.biblioteca.big.model.Book;
 import com.biblioteca.big.model.Reservation;
@@ -23,8 +22,7 @@ public class ReservationService {
     @Autowired private UserRepository userRepository;
 
     //POST RESERVATION
-    public void insertReservation(Reservation reservation) throws BookNotFoundException{
-
+    public void createReservation(Reservation reservation){
         Optional<Book> bookOptional = bookRepository.findById(reservation.getBook().getId());
         Optional<User> userOptional = userRepository.findById(reservation.getUser().getId());
 
@@ -39,9 +37,7 @@ public class ReservationService {
     }
 
     //PUT RESERVATION X ID
-    public void updateExistingReservationById(@RequestBody Reservation reservation,
-                                                  @PathVariable Long id) throws ReservationNotFoundException {
-
+    public void updateReservationById(@RequestBody Reservation reservation, @PathVariable("id") Long id) throws ReservationNotFoundException {
         Optional<Reservation> existingReservation = reservationRepository.findById(id);
 
         if (existingReservation.isEmpty()){
@@ -53,9 +49,7 @@ public class ReservationService {
     }
 
     //GET RESERVATION X ID
-    public Reservation getExistsReservationById(@PathVariable Long id)
-            throws ReservationNotFoundException {
-
+    public Reservation getReservationById(@PathVariable("id") Long id) throws ReservationNotFoundException {
         Optional<Reservation> existingReservation = reservationRepository.findById(id);
         if (existingReservation.isEmpty()){
             throw new ReservationNotFoundException("La reserva no existe");

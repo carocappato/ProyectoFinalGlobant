@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @AllArgsConstructor
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private UserRepository userRepository;
 
     //POST USER
     public void insertUser (@RequestBody User user)
