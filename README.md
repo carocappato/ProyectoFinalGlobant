@@ -31,7 +31,7 @@ http://localhost:8080/books/create
 ```
 {
     "title": "book title",
-    "author": "bookt author",
+    "author": "book author",
     "publishYear": 2021,
     "bookStatus": "disponible"
 }
